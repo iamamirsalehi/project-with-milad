@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Contracts\Exceptions\BusinessException;
+use App\Contracts\Responses\JsonResponse;
 use App\Http\Requests\API\V1\GetMovieRequest;
 use App\Http\Requests\API\V1\UploadMovieRequest;
-use App\Models\Movie;
 use App\Services\MovieSearch\MovieSearchDto;
 use App\Services\MovieSearch\MovieSearchInterface;
-use Symfony\Component\HttpFoundation\Response;
+use App\Services\VideoUploader\VideoUploaderServiceInterface;
 
 class MovieController
 {
-    public function __construct(private MovieSearchInterface $movieSearchService)
+    public function __construct(
+        private MovieSearchInterface          $movieSearchService,
+        private VideoUploaderServiceInterface $videoUploaderService,
+    )
     {
     }
 
@@ -26,25 +30,23 @@ class MovieController
             $dto->setImdbID($request->get('imdb_id'));
         }
 
-        $movie = $this->movieSearchService->search($dto);
-
-        return response()->json($movie);
-    }
-
-    public function upload(UploadMovieRequest $request, $imdbID)
-    {
-        //TODO: needs to be a service
-        $movie = Movie::findByIMDBID($imdbID);
-        if (!$movie){
-            return response()->json(['message' => 'movie not found'], Response::HTTP_NOT_FOUND);
+        try {
+            $movie = $this->movieSearchService->search($dto);
+        } catch (BusinessException $exception) {
+            return JsonResponse::unprocessableEntity($exception->getMessage());
         }
 
-        $path = $request->file('movie')->store('movies');
+        return JsonResponse::ok('', $movie?->toArray());
+    }
 
-        $movie->update([
-            'url' => $path,
-        ]);
+    public function uploadVideo(UploadMovieRequest $request, $imdbID)
+    {
+        try {
+            $this->videoUploaderService->upload($request->file('video'), $imdbID);
+        } catch (BusinessException $exception) {
+            return JsonResponse::unprocessableEntity($exception->getMessage());
+        }
 
-        return response()->json(['message' => 'movie uploaded successfully'], Response::HTTP_OK);
+        return JsonResponse::ok('movie uploaded successfully');
     }
 }

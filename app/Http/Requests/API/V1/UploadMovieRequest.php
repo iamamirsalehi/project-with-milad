@@ -22,7 +22,7 @@ class UploadMovieRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'movie' => 'required|file|mimetypes:video/mp4',
+            'video' => 'required|file|mimetypes:video/mp4',
         ];
     }
 }
