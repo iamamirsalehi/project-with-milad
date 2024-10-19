@@ -3,6 +3,7 @@
 namespace App\Contracts\Repositories\Eloquent\Movie;
 
 use App\Contracts\Repositories\Dto\BaseResult;
+use App\Modules\Movie\Enums\MovieStatus;
 
 class MovieResult extends BaseResult
 {
@@ -15,6 +16,7 @@ class MovieResult extends BaseResult
         private readonly string $imdbRating,
         private readonly string $imdbID,
         private readonly string $imdbVotes,
+        private readonly MovieStatus $status,
         private readonly ?string $url = null,
     )
     {
@@ -63,5 +65,10 @@ class MovieResult extends BaseResult
     public function getImdbVotes(): string
     {
         return $this->imdbVotes;
+    }
+
+    public function getStatus(): MovieStatus
+    {
+        return $this->status;
     }
 }

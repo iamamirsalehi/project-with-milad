@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\Repositories\Eloquent\Movie\MovieRepository;
 use App\Contracts\Repositories\IMovieRepository;
-use App\Models\Movie;
+use App\Modules\Movie\Models\Movie;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

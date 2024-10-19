@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Movie\Models;
 
+use App\Modules\Movie\Enums\MovieStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -12,6 +13,7 @@ use Illuminate\Support\Carbon;
  * @property string $country
  * @property string $poster
  * @property string $url
+ * @property MovieStatus $status
  * @property string $imdb_rating
  * @property string $imdb_id
  * @property string imdb_votes
@@ -21,6 +23,13 @@ use Illuminate\Support\Carbon;
 class Movie extends Model
 {
     protected $guarded = [];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => MovieStatus::class,
+        ];
+    }
 
     public static function findByIMDBID(string $imdbID): ?self
     {

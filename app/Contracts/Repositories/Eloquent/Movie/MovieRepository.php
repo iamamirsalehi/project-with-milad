@@ -5,7 +5,9 @@ namespace App\Contracts\Repositories\Eloquent\Movie;
 use App\Contracts\Repositories\Dto\BaseCreateData;
 use App\Contracts\Repositories\Eloquent\BaseRepository;
 use App\Contracts\Repositories\IMovieRepository;
-use App\Models\Movie;
+use App\Modules\Movie\Enums\MovieStatus;
+use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Movie\Models\Movie;
 
 class MovieRepository extends BaseRepository implements IMovieRepository
 {
@@ -28,6 +30,7 @@ class MovieRepository extends BaseRepository implements IMovieRepository
             'imdb_rating' => $data->getImdbRating(),
             'imdb_votes' => $data->getImdbVotes(),
             'imdb_id' => $data->getImdbId(),
+            'status' => MovieStatus::Draft,
         ]);
 
         return new MovieResult(
@@ -39,6 +42,7 @@ class MovieRepository extends BaseRepository implements IMovieRepository
             $movie->imdb_rating,
             $movie->imdb_id,
             $movie->imdb_votes,
+            $movie->status,
             $movie->url,
         );
     }
@@ -60,7 +64,44 @@ class MovieRepository extends BaseRepository implements IMovieRepository
             $movie->imdb_rating,
             $movie->imdb_id,
             $movie->imdb_votes,
+            $movie->status,
             $movie->url,
         );
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
+    public function updateURL(string $imdbID, string $url): void
+    {
+        $updated = $this->model->newQuery()->where('imdb_id', $imdbID)->update([
+            'url' => $url,
+        ]);
+
+        if (false == $updated) {
+            throw MovieApplicationException::couldNotUpdateMovieURL();
+        }
+    }
+
+    public function changeStatusToPublished(string $imdbID): void
+    {
+        $updated = $this->model->newQuery()->where('imdb_id', $imdbID)->update([
+            'status' => MovieStatus::Published,
+        ]);
+
+        if (false == $updated) {
+            throw MovieApplicationException::couldNotChangeStatus();
+        }
+    }
+
+    public function changeStatusToDraft(string $imdbID): void
+    {
+        $updated = $this->model->newQuery()->where('imdb_id', $imdbID)->update([
+            'status' => MovieStatus::Draft,
+        ]);
+
+        if (false == $updated) {
+            throw MovieApplicationException::couldNotChangeStatus();
+        }
     }
 }

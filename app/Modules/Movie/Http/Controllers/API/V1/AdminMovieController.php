@@ -5,12 +5,16 @@ namespace App\Modules\Movie\Http\Controllers\API\V1;
 use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
 use App\Modules\Movie\Http\Requests\API\V1\GetMovieRequest;
+use App\Modules\Movie\Http\Requests\API\V1\UploadMovieRequest;
 use App\Modules\Movie\Services\MovieService\MovieService;
+use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
+use Illuminate\Http\Request;
 
-class MovieController
+class AdminMovieController
 {
     public function __construct(
-        private MovieService $movieService,
+        private MovieService         $movieService,
+        private VideoUploaderService $videoUploaderService,
     )
     {
     }
@@ -19,7 +23,13 @@ class MovieController
     {
         $imdbID = $request->get('imdb_id');
         try {
-            $movie = $this->movieService->getIfAvailable($imdbID);
+
+            if ($this->movieService->exists($imdbID)) {
+                $movie = $this->movieService->get($imdbID);
+            } else {
+                $movie = $this->movieService->add($imdbID);
+            }
+
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
@@ -34,5 +44,16 @@ class MovieController
             'imdbID' => $movie->getImdbID(),
             'imdbVotes' => $movie->getImdbVotes(),
         ]);
+    }
+
+    public function uploadVideo(UploadMovieRequest $request, $imdbID)
+    {
+        try {
+            $this->videoUploaderService->upload($request->file('video'), $imdbID);
+        } catch (BusinessException $exception) {
+            return JsonResponse::unprocessableEntity($exception->getMessage());
+        }
+
+        return JsonResponse::ok('movie uploaded successfully');
     }
 }

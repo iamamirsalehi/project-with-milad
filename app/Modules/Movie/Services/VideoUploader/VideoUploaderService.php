@@ -2,28 +2,36 @@
 
 namespace App\Modules\Movie\Services\VideoUploader;
 
-use App\Models\Movie;
+use App\Contracts\Repositories\Eloquent\Movie\MovieResult;
+use App\Contracts\Repositories\IMovieRepository;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class VideoUploaderService implements VideoUploaderServiceInterface
+class VideoUploaderService
 {
+    public function __construct(private IMovieRepository $movieRepository)
+    {
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
     public function upload(UploadedFile $file, string $imdbID): void
     {
-        $movie = Movie::findByIMDBID($imdbID);
-        if (!$movie) {
+        /** @var MovieResult $movie */
+        $movie = $this->movieRepository->findByIMDBID($imdbID);
+        if (is_null($movie)) {
             throw MovieApplicationException::couldNotFindMovie();
         }
 
-        $path = sprintf("movies/%s", $movie->imdb_id);
+        $path = sprintf("movies/%s", $movie->getImdbID());
 
         $uploadedPath = $file->storePublicly($path);
         if (!$uploadedPath) {
             throw MovieApplicationException::couldNotUploadVideo();
         }
 
-        $movie->url = Storage::url($uploadedPath);
-        $movie->save();
+        $this->movieRepository->updateURL($movie->getImdbID(),  Storage::url($uploadedPath));
     }
 }
