@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\V1\MovieController;
+use App\Modules\Movie\Http\Controllers\API\V1\MovieController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {

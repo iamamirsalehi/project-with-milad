@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\API\V1;
+namespace App\Modules\Movie\Http\Requests\API\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetMovieRequest extends FormRequest
+class UploadMovieRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,7 @@ class GetMovieRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'nullable|string',
-            'imdb_id' => 'nullable|string',
+            'video' => 'required|file|mimetypes:video/mp4',
         ];
     }
 }

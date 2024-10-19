@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\VideoUploader;
+namespace App\Modules\Movie\Services\VideoUploader;
 
-use App\Exceptions\MovieApplicationException;
 use App\Models\Movie;
+use App\Modules\Movie\Exceptions\MovieApplicationException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 

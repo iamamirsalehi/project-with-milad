@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\VideoUploader;
+namespace App\Modules\Movie\Services\VideoUploader;
 
 use Illuminate\Http\UploadedFile;
 

@@ -26,4 +26,9 @@ class Movie extends Model
     {
         return self::query()->where('imdb_id', $imdbID)->first();
     }
+
+    public static function exists(string $imdbID): bool
+    {
+        return self::query()->where('imdb_id', $imdbID)->exists();
+    }
 }
