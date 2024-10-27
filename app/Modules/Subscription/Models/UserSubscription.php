@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property int $user_id
  * @property int $subscription_id
- * @property Carbon $expiresAt
+ * @property Carbon $expires_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * */
@@ -26,10 +26,11 @@ class UserSubscription extends Model
 
         $this->user_id = $userID;
         $this->subscription_id = $subscriptionID;
+        $this->expires_at = $expiresAt;
     }
 
     public function isActive(): bool
     {
-        return $this->expiresAt > Carbon::now();
+        return $this->expires_at > Carbon::now();
     }
 }

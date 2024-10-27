@@ -9,7 +9,7 @@ class UserSubscriptionRepository extends EloquentBaseRepository implements IUser
 {
     public function save(UserSubscription $userSubscription): void
     {
-        // TODO: Implement save() method.
+        $userSubscription->save();
     }
 
     public function exists(int $userID, int $subscriptionID): bool
