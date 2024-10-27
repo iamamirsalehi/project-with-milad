@@ -2,11 +2,10 @@
 
 namespace App\Providers;
 
-use App\Contracts\Repositories\Eloquent\Movie\MovieRepository;
+use App\Contracts\Repositories\Eloquent\MovieRepository;
 use App\Modules\Movie\Models\Movie;
 use App\Modules\Movie\Services\MovieSearchService\OMDBMovieSearchService;
 use App\Modules\Movie\Services\MovieService\MovieService;
-use App\Modules\Movie\Services\MovieStatusService\MovieStatusService;
 use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,12 +30,6 @@ class AppServiceProvider extends ServiceProvider
             $movieRepository = new MovieRepository(new Movie());
 
             return new VideoUploaderService($movieRepository);
-        });
-
-        $this->app->bind(MovieStatusService::class, function ($app) {
-            $movieRepository = new MovieRepository(new Movie());
-
-            return new MovieStatusService($movieRepository);
         });
     }
 

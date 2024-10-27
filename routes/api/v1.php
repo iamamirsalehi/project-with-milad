@@ -1,20 +1,24 @@
 <?php
 
-use App\Modules\Movie\Http\Controllers\API\V1\AdminMovieController;
-use App\Modules\Movie\Http\Controllers\API\V1\MovieController;
-use App\Modules\Movie\Http\Controllers\API\V1\AdminMovieStatusController;
+use App\Http\Controllers\API\V1\AdminMovieController;
+use App\Http\Controllers\API\V1\MovieController;
+use App\Http\Controllers\API\V1\AdminSubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
     Route::prefix('admin/movie')->group(function () {
         Route::get('', [AdminMovieController::class, 'get']);
+        Route::post('', [AdminMovieController::class, 'add']);
         Route::post('{imdbID}/video', [AdminMovieController::class, 'uploadVideo']);
-        Route::put('{imdbID}/publish', [AdminMovieStatusController::class, 'publish']);
-        Route::put('{imdbID}/draft', [AdminMovieStatusController::class, 'draft']);
+        Route::put('{imdbID}/publish', [AdminMovieController::class, 'publish']);
+        Route::put('{imdbID}/draft', [AdminMovieController::class, 'draft']);
+        Route::post('subscription', [AdminSubscriptionController::class, 'add']);
     });
 
     Route::prefix('movie')->group(function () {
         Route::get('', [MovieController::class, 'get']);
     });
+
+//    Route::post('subscribe', );
 });

@@ -2,9 +2,15 @@
 
 namespace App\Providers;
 
-use App\Contracts\Repositories\Eloquent\Movie\MovieRepository;
+use App\Contracts\Repositories\Eloquent\MovieRepository;
+use App\Contracts\Repositories\Eloquent\SubscriptionRepository;
+use App\Contracts\Repositories\Eloquent\UserSubscriptionRepository;
 use App\Contracts\Repositories\IMovieRepository;
+use App\Contracts\Repositories\ISubscriptionRepository;
+use App\Contracts\Repositories\IUserSubscriptionRepository;
 use App\Modules\Movie\Models\Movie;
+use App\Modules\Subscription\Models\Subscription;
+use App\Modules\Subscription\Models\UserSubscription;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -18,6 +24,18 @@ class RepositoryServiceProvider extends ServiceProvider
             $movieEloquent = new Movie();
 
             return new MovieRepository($movieEloquent);
+        });
+
+        $this->app->bind(ISubscriptionRepository::class, function ($app) {
+            $subscriptionEloquent = new Subscription();
+
+            return new SubscriptionRepository($subscriptionEloquent);
+        });
+
+        $this->app->bind(IUserSubscriptionRepository::class, function ($app) {
+            $userSubscriptionEloquent = new UserSubscription();
+
+            return new UserSubscriptionRepository($userSubscriptionEloquent);
         });
     }
 

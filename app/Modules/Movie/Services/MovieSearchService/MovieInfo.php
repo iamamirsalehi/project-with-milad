@@ -2,7 +2,7 @@
 
 namespace App\Modules\Movie\Services\MovieSearchService;
 
-class MovieInfo
+readonly class MovieInfo
 {
     public function __construct(
         private string $title,

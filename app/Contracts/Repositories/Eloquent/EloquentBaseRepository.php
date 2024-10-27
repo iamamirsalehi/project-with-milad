@@ -2,14 +2,11 @@
 
 namespace App\Contracts\Repositories\Eloquent;
 
-use App\Contracts\Repositories\IRepository;
 use Illuminate\Database\Eloquent\Model;
 
-class BaseRepository implements IRepository
+abstract class EloquentBaseRepository
 {
     public function __construct(protected Model $model)
     {
     }
-
-
 }

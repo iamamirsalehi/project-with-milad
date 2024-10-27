@@ -3,6 +3,7 @@
 namespace App\Modules\Movie\Models;
 
 use App\Modules\Movie\Enums\MovieStatus;
+use App\Modules\Movie\Exceptions\MovieApplicationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -31,13 +32,71 @@ class Movie extends Model
         ];
     }
 
-    public static function findByIMDBID(string $imdbID): ?self
+    public static function new(
+        string $title,
+        string $language,
+        string $country,
+        string $poster,
+        string $imdbId,
+        string $imdbRating,
+        string $imdbVotes,
+    ): self
     {
-        return self::query()->where('imdb_id', $imdbID)->first();
+        $newMovie = new self();
+        $newMovie->title = $title;
+        $newMovie->language = $language;
+        $newMovie->country = $country;
+        $newMovie->poster = $poster;
+        $newMovie->imdb_id = $imdbId;
+        $newMovie->imdb_rating = $imdbRating;
+        $newMovie->imdb_votes = $imdbVotes;
+        $newMovie->status = MovieStatus::Draft;
+
+        return $newMovie;
     }
 
-    public static function exists(string $imdbID): bool
+    public function isAvailable(): bool
     {
-        return self::query()->where('imdb_id', $imdbID)->exists();
+        return !is_null($this->url) && $this->status == MovieStatus::Published;
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->status == MovieStatus::Draft;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->status == MovieStatus::Published;
+    }
+
+    public function hasVideo(): bool
+    {
+        return !is_null($this->url);
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
+    public function publish(): void
+    {
+        if ($this->isPublished()) {
+            throw MovieApplicationException::movieIsAlreadyPublished();
+        }
+
+        if (false === $this->hasVideo()) {
+            throw MovieApplicationException::movieDoesNotHaveVideo();
+        }
+
+        $this->status = MovieStatus::Published;
+    }
+
+    public function draft(): void
+    {
+        if ($this->isDraft()) {
+            throw MovieApplicationException::movieIsAlreadyDraft();
+        }
+
+        $this->status = MovieStatus::Draft;
     }
 }

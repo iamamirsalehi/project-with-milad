@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Modules\Movie\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API\V1;
 
 use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
-use App\Modules\Movie\Http\Requests\API\V1\GetMovieRequest;
+use App\Http\Controllers\Requests\API\V1\MovieRequest;
 use App\Modules\Movie\Services\MovieService\MovieService;
 
 class MovieController
@@ -15,7 +15,7 @@ class MovieController
     {
     }
 
-    public function get(GetMovieRequest $request)
+    public function get(MovieRequest $request)
     {
         $imdbID = $request->get('imdb_id');
         try {
@@ -25,14 +25,14 @@ class MovieController
         }
 
         return JsonResponse::ok('', [
-            'title' => $movie->getTitle(),
-            'language' => $movie->getLanguage(),
-            'country' => $movie->getCountry(),
-            'poster' => $movie->getPoster(),
-            'url' => $movie->getUrl(),
-            'imdbRating' => $movie->getImdbRating(),
-            'imdbID' => $movie->getImdbID(),
-            'imdbVotes' => $movie->getImdbVotes(),
+            'title' => $movie->title,
+            'language' => $movie->language,
+            'country' => $movie->country,
+            'poster' => $movie->poster,
+            'url' => $movie->url,
+            'imdbRating' => $movie->imdb_rating,
+            'imdbID' => $movie->imdb_id,
+            'imdbVotes' => $movie->imdb_votes,
         ]);
     }
 }
