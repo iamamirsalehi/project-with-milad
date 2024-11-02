@@ -7,26 +7,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * @property int $id
- * @property int $user_id
- * @property int $subscription_id
- * @property Carbon $expires_at
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property       int $id
+ * @property-read  int $user_id
+ * @property-read  int $subscription_id
+ * @property       Carbon $expires_at
+ * @property       Carbon $created_at
+ * @property       Carbon $updated_at
  * */
 class UserSubscription extends Model
 {
     protected $guarded = [];
 
-    public function subscribe(int $userID, int $subscriptionID, Carbon $expiresAt): void
+    /**
+     * @throws SubscriptionApplicationExceptions
+     */
+    public static function new(int $userID, int $subscriptionID, Carbon $expiresAt): self
     {
         if ($expiresAt->isPast()) {
             throw SubscriptionApplicationExceptions::invalidExpireDate();
         }
 
-        $this->user_id = $userID;
-        $this->subscription_id = $subscriptionID;
-        $this->expires_at = $expiresAt;
+        $userSubscription = new self();
+
+        $userSubscription->user_id = $userID;
+        $userSubscription->subscription_id = $subscriptionID;
+        $userSubscription->expires_at = $expiresAt;
+
+        return $userSubscription;
     }
 
     public function isActive(): bool

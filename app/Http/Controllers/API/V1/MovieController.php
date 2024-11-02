@@ -6,8 +6,9 @@ use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
 use App\Http\Controllers\Requests\API\V1\MovieRequest;
 use App\Modules\Movie\Services\MovieService\MovieService;
+use Illuminate\Http\Response;
 
-class MovieController
+readonly class MovieController
 {
     public function __construct(
         private MovieService $movieService,
@@ -15,7 +16,7 @@ class MovieController
     {
     }
 
-    public function get(MovieRequest $request)
+    public function get(MovieRequest $request): Response
     {
         $imdbID = $request->get('imdb_id');
         try {

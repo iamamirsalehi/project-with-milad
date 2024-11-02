@@ -31,8 +31,7 @@ readonly class UserSubscriptionService
             throw SubscriptionApplicationExceptions::userCanNotHaveTwoSubscriptions();
         }
 
-        $userSubscription = new UserSubscription();
-        $userSubscription->subscribe($userID, $subscriptionID, Carbon::now()->addMonths($subscription->duration_in_month));
+        $userSubscription = $subscription->subscribe($userID, Carbon::now()->addMonths($subscription->duration_in_month));
 
         $this->userSubscriptionRepository->save($userSubscription);
     }

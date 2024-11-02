@@ -32,8 +32,8 @@ readonly class MovieService
             $searchedMovie->getLanguage(),
             $searchedMovie->getCountry(),
             $searchedMovie->getPoster(),
-            $searchedMovie->getImdbRating(),
             $searchedMovie->getIMDBID(),
+            $searchedMovie->getImdbRating(),
             $searchedMovie->getImdbVotes(),
         );
 

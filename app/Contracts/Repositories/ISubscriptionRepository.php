@@ -10,5 +10,7 @@ interface ISubscriptionRepository
 
     public function exists(int $id): bool;
 
+    public function findByName(string $name): ?Subscription;
+
     public function findByID(int $id): ?Subscription;
 }

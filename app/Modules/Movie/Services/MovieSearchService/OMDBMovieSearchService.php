@@ -3,6 +3,12 @@
 namespace App\Modules\Movie\Services\MovieSearchService;
 
 use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Movie\Models\Country;
+use App\Modules\Movie\Models\IMDBID;
+use App\Modules\Movie\Models\IMDBRating;
+use App\Modules\Movie\Models\IMDBVote;
+use App\Modules\Movie\Models\Language;
+use App\Modules\Movie\Models\Poster;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,12 +44,17 @@ class OMDBMovieSearchService implements IMovieSearchService
 
         return new MovieInfo(
             $parsedBody['Title'],
-            $parsedBody['Country'],
-            $parsedBody['Language'],
-            $parsedBody['Poster'],
-            $parsedBody['imdbRating'],
-            $parsedBody['imdbID'],
-            $parsedBody['imdbVotes']
+            new Language($parsedBody['Language']),
+            new Country($parsedBody['Country']),
+            new Poster($parsedBody['Poster']),
+            new IMDBRating(floatval($parsedBody['imdbRating'])),
+            new IMDBID($parsedBody['imdbID']),
+            new IMDBVote($this->imdbVoteToInt($parsedBody['imdbVotes']))
         );
+    }
+
+    private function imdbVoteToInt(string $imdbVote): int
+    {
+        return intval(str_replace(',', '', $imdbVote));
     }
 }

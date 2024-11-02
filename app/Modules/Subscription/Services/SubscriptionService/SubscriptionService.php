@@ -3,17 +3,25 @@
 namespace App\Modules\Subscription\Services\SubscriptionService;
 
 use App\Contracts\Repositories\ISubscriptionRepository;
+use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Subscription\Exceptions\SubscriptionApplicationExceptions;
 use App\Modules\Subscription\Models\Subscription;
 
-class SubscriptionService
+readonly class SubscriptionService
 {
     public function __construct(private ISubscriptionRepository $subscriptionRepository)
     {
     }
 
+    /**
+     * @throws SubscriptionApplicationExceptions
+     * @throws MovieApplicationException
+     */
     public function add(SubscriptionData $data): void
     {
-        //TODO: What fields to be considered unique?
+        if (false === is_null($this->subscriptionRepository->findByName($data->getName()))) {
+            throw SubscriptionApplicationExceptions::subscriptionAlreadyExists();
+        }
 
         $subscription = Subscription::new(
             $data->getName(),

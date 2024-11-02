@@ -2,16 +2,23 @@
 
 namespace App\Modules\Movie\Services\MovieSearchService;
 
+use App\Modules\Movie\Models\Country;
+use App\Modules\Movie\Models\IMDBID;
+use App\Modules\Movie\Models\IMDBRating;
+use App\Modules\Movie\Models\IMDBVote;
+use App\Modules\Movie\Models\Language;
+use App\Modules\Movie\Models\Poster;
+
 readonly class MovieInfo
 {
     public function __construct(
-        private string $title,
-        private string $language,
-        private string $country,
-        private string $poster,
-        private string $imdbRating,
-        private string $imdbID,
-        private string $imdbVotes
+        private string     $title,
+        private Language   $language,
+        private Country    $country,
+        private Poster     $poster,
+        private IMDBRating $imdbRating,
+        private IMDBID     $imdbID,
+        private IMDBVote   $imdbVotes
     )
     {
     }
@@ -21,32 +28,32 @@ readonly class MovieInfo
         return $this->title;
     }
 
-    public function getLanguage(): string
+    public function getLanguage(): Language
     {
         return $this->language;
     }
 
-    public function getCountry(): string
+    public function getCountry(): Country
     {
         return $this->country;
     }
 
-    public function getPoster(): string
+    public function getPoster(): Poster
     {
         return $this->poster;
     }
 
-    public function getImdbRating(): string
+    public function getImdbRating(): IMDBRating
     {
         return $this->imdbRating;
     }
 
-    public function getImdbID(): string
+    public function getImdbID(): IMDBID
     {
         return $this->imdbID;
     }
 
-    public function getImdbVotes(): string
+    public function getImdbVotes(): IMDBVote
     {
         return $this->imdbVotes;
     }

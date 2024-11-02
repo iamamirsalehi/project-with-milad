@@ -8,7 +8,7 @@ use App\Http\Controllers\Requests\API\V1\SubscribeRequest;
 use App\Modules\Subscription\Services\UserSubscriptionService\UserSubscriptionService;
 use Illuminate\Http\Response;
 
-class UserSubscriptionController
+readonly class UserSubscriptionController
 {
     public function __construct(private UserSubscriptionService $userSubscriptionService)
     {

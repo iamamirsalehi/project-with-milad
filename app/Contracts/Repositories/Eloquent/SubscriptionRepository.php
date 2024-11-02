@@ -17,6 +17,11 @@ class SubscriptionRepository extends EloquentBaseRepository implements ISubscrip
         return $this->model->newQuery()->where('id', $id)->first();
     }
 
+    public function findByName(string $name): ?Subscription
+    {
+        return $this->model->newQuery()->where('name', $name)->first();
+    }
+
     public function exists(int $id): bool
     {
         return $this->model->newQuery()->where('id', $id)->exists();

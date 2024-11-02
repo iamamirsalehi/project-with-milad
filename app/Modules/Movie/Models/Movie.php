@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
  * @property string $country
  * @property string $poster
  * @property string $url
- * @property MovieStatus $status
+ * @property-read MovieStatus $status
  * @property string $imdb_rating
  * @property string $imdb_id
  * @property string imdb_votes
@@ -32,24 +32,27 @@ class Movie extends Model
         ];
     }
 
+    /**
+     * @throws MovieApplicationException
+     */
     public static function new(
-        string $title,
-        string $language,
-        string $country,
-        string $poster,
-        string $imdbId,
-        string $imdbRating,
-        string $imdbVotes,
+        string     $title,
+        Language   $language,
+        Country    $country,
+        Poster     $poster,
+        IMDBID     $imdbId,
+        IMDBRating $imdbRating,
+        IMDBVote   $imdbVotes,
     ): self
     {
         $newMovie = new self();
         $newMovie->title = $title;
-        $newMovie->language = $language;
-        $newMovie->country = $country;
-        $newMovie->poster = $poster;
-        $newMovie->imdb_id = $imdbId;
-        $newMovie->imdb_rating = $imdbRating;
-        $newMovie->imdb_votes = $imdbVotes;
+        $newMovie->language = $language->get();
+        $newMovie->country = $country->get();
+        $newMovie->poster = $poster->get();
+        $newMovie->imdb_id = $imdbId->get();
+        $newMovie->imdb_rating = $imdbRating->get();
+        $newMovie->imdb_votes = $imdbVotes->get();
         $newMovie->status = MovieStatus::Draft;
 
         return $newMovie;
@@ -91,6 +94,9 @@ class Movie extends Model
         $this->status = MovieStatus::Published;
     }
 
+    /**
+     * @throws MovieApplicationException
+     */
     public function draft(): void
     {
         if ($this->isDraft()) {

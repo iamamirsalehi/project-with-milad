@@ -16,6 +16,7 @@ class VideoUploaderService
      */
     public function upload(string $imdbID, string $fullVideoPath): void
     {
+        //TODO: abstraction
         $movie = $this->movieRepository->findByIMDBID($imdbID);
         if (is_null($movie)) {
             throw MovieApplicationException::couldNotFindMovie();
