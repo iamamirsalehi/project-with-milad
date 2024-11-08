@@ -11,7 +11,6 @@ use App\Http\Resources\API\V1\MovieResource;
 use App\Modules\Favorite\Services\FavoriteService\FavoriteService;
 use App\Modules\Movie\Models\IMDBID;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Redis;
 
 readonly class UserFavoriteMovieController
 {

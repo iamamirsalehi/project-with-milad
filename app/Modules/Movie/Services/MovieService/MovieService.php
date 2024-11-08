@@ -4,6 +4,7 @@ namespace App\Modules\Movie\Services\MovieService;
 
 use App\Contracts\Repositories\IMovieRepository;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Models\Movie;
 use App\Modules\Movie\Services\MovieSearchService\IMovieSearchService;
 
@@ -19,9 +20,9 @@ readonly class MovieService
     /**
      * @throws MovieApplicationException
      */
-    public function add(string $imdbID): void
+    public function add(IMDBID $imdbID): void
     {
-        if ($this->movieRepository->exists($imdbID)) {
+        if ($this->movieRepository->exists($imdbID->get())) {
             throw MovieApplicationException::movieAlreadyExists();
         }
 
@@ -43,7 +44,7 @@ readonly class MovieService
     /**
      * @throws MovieApplicationException
      */
-    public function get(string $imdbID): Movie
+    public function get(IMDBID $imdbID): Movie
     {
         $movie = $this->movieRepository->findByIMDBID($imdbID);
         if (is_null($movie)) {
@@ -56,7 +57,7 @@ readonly class MovieService
     /**
      * @throws MovieApplicationException
      */
-    public function getIfAvailable(string $imdbID): Movie
+    public function getIfAvailable(IMDBID $imdbID): Movie
     {
         $movie = $this->get($imdbID);
         if (!$movie->isAvailable()) {
@@ -69,7 +70,7 @@ readonly class MovieService
     /**
      * @throws MovieApplicationException
      */
-    public function publish(string $imdbID): void
+    public function publish(IMDBID $imdbID): void
     {
         $movie = $this->movieRepository->findByIMDBID($imdbID);
         if (is_null($movie)) {
@@ -84,7 +85,7 @@ readonly class MovieService
     /**
      * @throws MovieApplicationException
      */
-    public function draft(string $imdbID): void
+    public function draft(IMDBID $imdbID): void
     {
         $movie = $this->movieRepository->findByIMDBID($imdbID);
         if (is_null($movie)) {

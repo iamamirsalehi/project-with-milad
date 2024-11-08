@@ -29,6 +29,7 @@ class MovieApplicationException extends BusinessException
     private const USER_DOES_NOT_HAVE_ANY_FAVORITES_MOVIE = 'user does not have any favorite movie';
     private const MOVIE_IS_NOT_IN_FAVORITES_LIST = 'movie is not in favorites list';
     private const FAVORITE_MOVIE_IS_ALREADY_REMOVED = 'favorite movie is already removed';
+    private const CAN_NOT_HAVE_MORE_THAN_TWO_RENTED_MOVIE = 'can not have more than two rented movie';
 
     public static function movieAlreadyExists(): self
     {
@@ -143,5 +144,10 @@ class MovieApplicationException extends BusinessException
     public static function favoriteMovieIsAlreadyRemoved(): self
     {
         return new self(self::FAVORITE_MOVIE_IS_ALREADY_REMOVED);
+    }
+
+    public static function canNotHaveMoreThanTwoRentedMovie(): self
+    {
+        return new self(self::CAN_NOT_HAVE_MORE_THAN_TWO_RENTED_MOVIE);
     }
 }

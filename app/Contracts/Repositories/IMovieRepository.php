@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Repositories;
 
+use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Models\Movie;
 
 interface IMovieRepository
@@ -10,5 +11,5 @@ interface IMovieRepository
 
     public function exists(string $imdbID): bool;
 
-    public function findByIMDBID(string $imdbID): ?Movie;
+    public function findByIMDBID(IMDBID $imdbID): ?Movie;
 }

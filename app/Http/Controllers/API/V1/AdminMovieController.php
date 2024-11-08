@@ -6,12 +6,11 @@ use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
 use App\Http\Controllers\Requests\API\V1\MovieRequest;
 use App\Http\Controllers\Requests\API\V1\UploadMovieRequest;
-use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Services\MovieService\MovieService;
 use App\Modules\Movie\Services\VideoUploader\HttpVideoUploaderService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 
 readonly class AdminMovieController
 {
@@ -26,7 +25,7 @@ readonly class AdminMovieController
     {
         $imdbID = $request->get('imdb_id');
         try {
-            $movie = $this->movieService->get($imdbID);
+            $movie = $this->movieService->get(new IMDBID($imdbID));
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
@@ -47,7 +46,7 @@ readonly class AdminMovieController
     {
         $imdbID = $request->get('imdb_id');
         try {
-            $this->movieService->add($imdbID);
+            $this->movieService->add(new IMDBID($imdbID));
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
@@ -59,7 +58,7 @@ readonly class AdminMovieController
     {
         try {
             $this->videoUploaderService->upload(
-                $imdbID,
+                new IMDBID($imdbID),
                 $request->file('video')->path(),
                 $request->file('video')->getClientOriginalExtension()
             );
@@ -73,7 +72,7 @@ readonly class AdminMovieController
     public function publish(Request $request, $imdbID): Response
     {
         try {
-            $this->movieService->publish($imdbID);
+            $this->movieService->publish(new IMDBID($imdbID));
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
@@ -84,7 +83,7 @@ readonly class AdminMovieController
     public function draft(Request $request, $imdbID): Response
     {
         try {
-            $this->movieService->draft($imdbID);
+            $this->movieService->draft(new IMDBID($imdbID));
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }

@@ -4,6 +4,7 @@ namespace App\Modules\Movie\Services\VideoUploader;
 
 use App\Contracts\Repositories\IMovieRepository;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Movie\Models\IMDBID;
 use Illuminate\Support\Facades\Storage;
 
 readonly class HttpVideoUploaderService implements IVideoUploader
@@ -15,7 +16,7 @@ readonly class HttpVideoUploaderService implements IVideoUploader
     /**
      * @throws MovieApplicationException
      */
-    public function upload(string $imdbID, string $videoTempPath, string $extension): void
+    public function upload(IMDBID $imdbID, string $videoTempPath, string $extension): void
     {
         $movie = $this->movieRepository->findByIMDBID($imdbID);
         if (is_null($movie)) {
@@ -26,7 +27,7 @@ readonly class HttpVideoUploaderService implements IVideoUploader
             throw MovieApplicationException::videoTempPathDoesNotExist();
         }
 
-        $directoryPath = storage_path('app/public/movies/%s' . $imdbID);
+        $directoryPath = storage_path('app/public/movies/%s' . $imdbID->get());
         $fullPath = sprintf("%s/%s.%s", realpath($directoryPath), $imdbID, $extension);;
 
         move_uploaded_file($videoTempPath, $fullPath);

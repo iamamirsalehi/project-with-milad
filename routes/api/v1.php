@@ -23,6 +23,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('movie')->group(function () {
         Route::get('', [MovieController::class, 'get']);
+        Route::post('rent', [MovieController::class, 'rent']);
         Route::post('favorite', [UserFavoriteMovieController::class, 'addToFavorite']);
         Route::get('favorite', [UserFavoriteMovieController::class, 'getUserFavoriteMovies']);
         Route::delete('favorite', [UserFavoriteMovieController::class, 'removeUserFavoriteMovies']);

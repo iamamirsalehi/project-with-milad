@@ -15,7 +15,6 @@ readonly class AdminSubscriptionController
 {
     public function __construct(private SubscriptionService $subscriptionService)
     {
-
     }
 
     public function add(SubscriptionRequest $request): Response

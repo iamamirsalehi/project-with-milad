@@ -43,7 +43,7 @@ readonly class FavoriteService
 
         $this->favoriteRepository->save($favorite);
 
-        $this->redis->publish('favorite-movies', serialize());
+        $this->redis->publish('favorite-movies', serialize($favorite));
     }
 
     /**
