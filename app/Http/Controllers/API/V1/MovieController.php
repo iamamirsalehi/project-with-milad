@@ -4,14 +4,20 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
+use App\Http\Controllers\Requests\API\V1\AddToFavoriteRequest;
 use App\Http\Controllers\Requests\API\V1\MovieRequest;
+use App\Http\Controllers\Requests\API\V1\UserFavoriteMoviesRequest;
+use App\Http\Resources\API\V1\MovieResource;
+use App\Modules\Favorite\Services\FavoriteService\FavoriteService;
+use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Services\MovieService\MovieService;
 use Illuminate\Http\Response;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 readonly class MovieController
 {
     public function __construct(
-        private MovieService $movieService,
+        private MovieService    $movieService,
     )
     {
     }

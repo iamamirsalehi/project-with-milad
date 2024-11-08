@@ -8,7 +8,7 @@ use App\Http\Controllers\Requests\API\V1\MovieRequest;
 use App\Http\Controllers\Requests\API\V1\UploadMovieRequest;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 use App\Modules\Movie\Services\MovieService\MovieService;
-use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
+use App\Modules\Movie\Services\VideoUploader\HttpVideoUploaderService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Storage;
 readonly class AdminMovieController
 {
     public function __construct(
-        private MovieService         $movieService,
-        private VideoUploaderService $videoUploaderService,
+        private MovieService             $movieService,
+        private HttpVideoUploaderService $videoUploaderService,
     )
     {
     }
@@ -58,16 +58,11 @@ readonly class AdminMovieController
     public function uploadVideo(UploadMovieRequest $request, $imdbID): Response
     {
         try {
-            $path = sprintf("movies/%s", $imdbID);
-
-            $uploadedPath = $request->file('video')->storePublicly($path);
-            if (!$uploadedPath) {
-                throw MovieApplicationException::couldNotUploadVideo();
-            }
-
-            $fullVideoPath = Storage::url($uploadedPath);
-
-            $this->videoUploaderService->upload($imdbID, $fullVideoPath);
+            $this->videoUploaderService->upload(
+                $imdbID,
+                $request->file('video')->path(),
+                $request->file('video')->getClientOriginalExtension()
+            );
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }

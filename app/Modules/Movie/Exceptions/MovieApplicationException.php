@@ -24,6 +24,11 @@ class MovieApplicationException extends BusinessException
     private const IMDB_VOTE_MUST_BE_GREATER_THAN_0 = 'imdb vote must be greater than 0';
     private const PRICE_CAN_NOT_BE_NEGATIVE = 'price can not be negative';
     private const DURATION_IN_MONTH_CAN_NOT_BE_NEGATIVE = 'duration in month cannot be negative';
+    private const VIDEO_TEMP_PATH_DOES_NOT_EXIST = 'video path does not exist';
+    private const MOVIE_IS_ALREADY_ADDED_TO_FAVORITES_LIST = 'movie is already added to favorites list';
+    private const USER_DOES_NOT_HAVE_ANY_FAVORITES_MOVIE = 'user does not have any favorite movie';
+    private const MOVIE_IS_NOT_IN_FAVORITES_LIST = 'movie is not in favorites list';
+    private const FAVORITE_MOVIE_IS_ALREADY_REMOVED = 'favorite movie is already removed';
 
     public static function movieAlreadyExists(): self
     {
@@ -113,5 +118,30 @@ class MovieApplicationException extends BusinessException
     public static function durationInMonthCanNotBeNegative(): self
     {
         return new self(self::DURATION_IN_MONTH_CAN_NOT_BE_NEGATIVE);
+    }
+
+    public static function videoTempPathDoesNotExist(): self
+    {
+        return new self(self::VIDEO_TEMP_PATH_DOES_NOT_EXIST);
+    }
+
+    public static function movieIsAlreadyAddedToFavoritesList(): self
+    {
+        return new self(self::MOVIE_IS_ALREADY_ADDED_TO_FAVORITES_LIST);
+    }
+
+    public static function userDoesNotHaveAnyFavoritesMovie(): self
+    {
+        return new self(self::USER_DOES_NOT_HAVE_ANY_FAVORITES_MOVIE);
+    }
+
+    public static function movieIsNotInFavoritesList(): self
+    {
+        return new self(self::MOVIE_IS_NOT_IN_FAVORITES_LIST);
+    }
+
+    public static function favoriteMovieIsAlreadyRemoved(): self
+    {
+        return new self(self::FAVORITE_MOVIE_IS_ALREADY_REMOVED);
     }
 }
