@@ -25,7 +25,7 @@ readonly class FavoriteService
      */
     public function add(IMDBID $IMDBID, int $userID): void
     {
-        $movie = $this->movieRepository->findByIMDBID($IMDBID->get());
+        $movie = $this->movieRepository->findByIMDBID($IMDBID);
         if (is_null($movie)) {
             throw MovieApplicationException::couldNotFindMovie();
         }
@@ -64,7 +64,7 @@ readonly class FavoriteService
      */
     public function remove(IMDBID $IMDBID, int $userID): void
     {
-        $movie = $this->movieRepository->findByIMDBID($IMDBID->get());
+        $movie = $this->movieRepository->findByIMDBID($IMDBID);
         if (is_null($movie)) {
             throw MovieApplicationException::couldNotFindMovie();
         }
