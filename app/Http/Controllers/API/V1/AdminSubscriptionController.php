@@ -23,13 +23,13 @@ readonly class AdminSubscriptionController
         $price = $request->get('price');
         $durationInMonth = $request->get('duration_in_month');
         try {
-            $subscriptionData = new NewSubscription(
+            $newSubscription = new NewSubscription(
                 $name,
                 new Price($price),
                 new DurationInMonth($durationInMonth),
             );
 
-            $this->subscriptionService->add($subscriptionData);
+            $this->subscriptionService->add($newSubscription);
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
