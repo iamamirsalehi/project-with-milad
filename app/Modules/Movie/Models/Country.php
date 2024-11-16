@@ -6,18 +6,15 @@ readonly class Country
 {
     public function __construct(private string $country)
     {
-
     }
 
-    public function get(): string
+    public function toPrimitiveType(): string
     {
-        $this->validate();
-
         return $this->country;
     }
 
-    private function validate(): void
+    public function __toString(): string
     {
-
+        return $this->toPrimitiveType();
     }
 }

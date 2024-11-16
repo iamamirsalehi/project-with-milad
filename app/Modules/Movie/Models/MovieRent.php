@@ -3,13 +3,19 @@
 namespace App\Modules\Movie\Models;
 
 use App\Modules\Movie\Enums\MovieRentType;
+use App\Modules\Movie\Models\Casts\MovieIDCast;
+use App\Modules\Movie\Models\Casts\MovieRentIDCast;
+use App\Modules\Subscription\Models\Casts\DurationInMonthCast;
+use App\Modules\Subscription\Models\Casts\PriceCast;
+use App\Modules\User\Models\Casts\UserIDCast;
+use App\Modules\User\Models\UserID;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * @property int $id
- * @property-read int $user_id
- * @property-read int $movie_id
+ * @property MovieRentID $id
+ * @property-read UserID $user_id
+ * @property-read MovieID $movie_id
  * @property-read MovieRentType $duration
  * @property-read Carbon $expires_at
  * @property-read Carbon $created_at
@@ -19,9 +25,21 @@ class MovieRent extends Model
 {
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'id' => MovieRentIDCast::class,
+            'user_id' => UserIDCast::class,
+            'movie_id' => MovieIDCast::class,
+            'duration' => MovieRentType::class,
+            'duration_in_month' => DurationInMonthCast::class,
+            'price' => PriceCast::class,
+        ];
+    }
+
     public static function new(
-        int           $movieId,
-        int           $userID,
+        MovieID       $movieId,
+        UserID        $userID,
         MovieRentType $type,
     ): self
     {

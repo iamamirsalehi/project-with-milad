@@ -6,27 +6,23 @@ use App\Modules\Movie\Exceptions\MovieApplicationException;
 
 readonly class Poster
 {
+    /**
+     * @throws MovieApplicationException
+     */
     public function __construct(private string $poster)
-    {
-    }
-
-    /**
-     * @throws MovieApplicationException
-     */
-    public function get(): string
-    {
-        $this->validate();
-
-        return $this->poster;
-    }
-
-    /**
-     * @throws MovieApplicationException
-     */
-    private function validate(): void
     {
         if (false === filter_var($this->poster, FILTER_VALIDATE_URL)) {
             throw MovieApplicationException::invalidPosterURL();
         }
+    }
+
+    public function toPrimitiveType(): string
+    {
+        return $this->poster;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toPrimitiveType();
     }
 }

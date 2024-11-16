@@ -6,24 +6,10 @@ use App\Modules\Movie\Exceptions\MovieApplicationException;
 
 readonly class IMDBID
 {
+    /**
+     * @throws MovieApplicationException
+     */
     public function __construct(private string $imdbID)
-    {
-    }
-
-    /**
-     * @throws MovieApplicationException
-     */
-    public function get(): string
-    {
-        $this->validate();
-
-        return $this->imdbID;
-    }
-
-    /**
-     * @throws MovieApplicationException
-     */
-    private function validate(): void
     {
         if (strlen($this->imdbID) <= 8) {
             throw MovieApplicationException::iMDBIDMustBeAtLeast9Character();
@@ -37,5 +23,15 @@ readonly class IMDBID
         if (false === is_numeric($explodedIMDBID[1])) {
             throw MovieApplicationException::iMDBIDMustContainIntegerAfterTT();
         }
+    }
+
+    public function toPrimitiveType(): string
+    {
+        return $this->imdbID;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toPrimitiveType();
     }
 }

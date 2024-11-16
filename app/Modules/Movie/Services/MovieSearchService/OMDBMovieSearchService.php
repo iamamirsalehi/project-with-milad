@@ -26,11 +26,14 @@ class OMDBMovieSearchService implements IMovieSearchService
      */
     public function searchByIMDBID(IMDBID $imdbID): MovieInfo
     {
-        $url = sprintf("%s&i=%s", $this->baseURL, $imdbID->get());
+        $url = sprintf("%s&i=%s", $this->baseURL, $imdbID);
 
         return $this->sendRequest($url);
     }
 
+    /**
+     * @throws MovieApplicationException
+     */
     private function sendRequest(string $url): MovieInfo
     {
         $response = Http::get($url);

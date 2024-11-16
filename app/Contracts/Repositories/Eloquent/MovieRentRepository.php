@@ -3,11 +3,13 @@
 namespace App\Contracts\Repositories\Eloquent;
 
 use App\Contracts\Repositories\IMovieRentRepository;
+use App\Modules\Movie\Models\MovieID;
 use App\Modules\Movie\Models\MovieRent;
+use App\Modules\User\Models\UserID;
 
 class MovieRentRepository extends EloquentBaseRepository implements IMovieRentRepository
 {
-    public function findLatestByUserIDAndMovieID($userID, $movieID): ?MovieRent
+    public function findLatestByUserIDAndMovieID(UserID $userID, MovieID $movieID): ?MovieRent
     {
         return $this->model->newQuery()
             ->where('user_id', $userID)

@@ -2,10 +2,10 @@
 
 namespace App\Modules\Subscription\Services\SubscriptionService;
 
-use App\Modules\Movie\Models\DurationInMonth;
-use App\Modules\Movie\Models\Price;
+use App\Modules\Subscription\Models\DurationInMonth;
+use App\Modules\Subscription\Models\Price;
 
-readonly class SubscriptionData
+readonly class NewSubscription
 {
     public function __construct(
         private string          $name,

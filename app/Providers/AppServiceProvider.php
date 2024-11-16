@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Contracts\MessageBus\IMessageBus;
+use App\Contracts\MessageBus\RedisMessageBus;
 use App\Contracts\Repositories\Eloquent\MovieRepository;
 use App\Modules\Movie\Models\Movie;
 use App\Modules\Movie\Services\MovieSearchService\OMDBMovieSearchService;
 use App\Modules\Movie\Services\MovieService\MovieService;
-use App\Modules\Movie\Services\VideoUploader\HttpVideoUploaderService;
+use App\Modules\Movie\Services\VideoUploader\IVideoUploader;
+use App\Modules\Movie\Services\VideoUploader\LocalStorageUploader;
+use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,11 +30,15 @@ class AppServiceProvider extends ServiceProvider
             return new MovieService($omdbDataProvider, $movieRepository);
         });
 
-        $this->app->bind(HttpVideoUploaderService::class, function ($app) {
+        $this->app->bind(VideoUploaderService::class, function ($app) {
             $movieRepository = new MovieRepository(new Movie());
+            $videoUploaderService = new LocalStorageUploader();
 
-            return new HttpVideoUploaderService($movieRepository);
+            return new VideoUploaderService($movieRepository, $videoUploaderService);
         });
+
+        $this->app->bind(IMessageBus::class, RedisMessageBus::class);
+        $this->app->bind(IVideoUploader::class, LocalStorageUploader::class);
     }
 
     /**

@@ -4,20 +4,27 @@ namespace App\Modules\Movie\Models;
 
 use App\Modules\Movie\Enums\MovieStatus;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Movie\Models\Casts\CountryCast;
+use App\Modules\Movie\Models\Casts\IMDBIDCast;
+use App\Modules\Movie\Models\Casts\IMDBRatingCast;
+use App\Modules\Movie\Models\Casts\IMDBVoteCast;
+use App\Modules\Movie\Models\Casts\LanguageCast;
+use App\Modules\Movie\Models\Casts\MovieIDCast;
+use App\Modules\Movie\Models\Casts\PosterCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * @property int $id
+ * @property MovieID $id
  * @property string $title
- * @property string $language
- * @property string $country
- * @property string $poster
+ * @property Language $language
+ * @property Country $country
+ * @property Poster $poster
  * @property string $url
  * @property-read MovieStatus $status
- * @property string $imdb_rating
- * @property string $imdb_id
- * @property string imdb_votes
+ * @property IMDBRating $imdb_rating
+ * @property IMDBID $imdb_id
+ * @property IMDBVote imdb_votes
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * */
@@ -28,13 +35,17 @@ class Movie extends Model
     protected function casts(): array
     {
         return [
+            'id' => MovieIDCast::class,
+            'language' => LanguageCast::class,
+            'country' => CountryCast::class,
+            'poster' => PosterCast::class,
+            'imdb_id' => IMDBIDCast::class,
+            'imdb_rating' => IMDBRatingCast::class,
+            'imdb_vote' => IMDBVoteCast::class,
             'status' => MovieStatus::class,
         ];
     }
 
-    /**
-     * @throws MovieApplicationException
-     */
     public static function new(
         string     $title,
         Language   $language,
@@ -47,12 +58,12 @@ class Movie extends Model
     {
         $newMovie = new self();
         $newMovie->title = $title;
-        $newMovie->language = $language->get();
-        $newMovie->country = $country->get();
-        $newMovie->poster = $poster->get();
-        $newMovie->imdb_id = $imdbId->get();
-        $newMovie->imdb_rating = $imdbRating->get();
-        $newMovie->imdb_votes = $imdbVotes->get();
+        $newMovie->language = $language;
+        $newMovie->country = $country;
+        $newMovie->poster = $poster;
+        $newMovie->imdb_id = $imdbId;
+        $newMovie->imdb_rating = $imdbRating;
+        $newMovie->imdb_votes = $imdbVotes;
         $newMovie->status = MovieStatus::Draft;
 
         return $newMovie;

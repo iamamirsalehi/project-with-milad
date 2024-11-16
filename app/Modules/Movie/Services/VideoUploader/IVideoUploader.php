@@ -6,5 +6,5 @@ use App\Modules\Movie\Models\IMDBID;
 
 interface IVideoUploader
 {
-    public function upload(IMDBID $imdbID, string $videoTempPath, string $extension): void;
+    public function upload(IMDBID $imdbID, string $videoTempPath, string $extension): string;
 }

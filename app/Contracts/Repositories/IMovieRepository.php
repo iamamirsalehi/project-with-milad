@@ -9,7 +9,7 @@ interface IMovieRepository
 {
     public function save(Movie $movie): void;
 
-    public function exists(string $imdbID): bool;
+    public function exists(IMDBID $imdbID): bool;
 
     public function findByIMDBID(IMDBID $imdbID): ?Movie;
 }

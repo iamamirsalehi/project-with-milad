@@ -8,15 +8,13 @@ readonly class Language
     {
     }
 
-    public function get(): string
+    public function toPrimitiveType(): string
     {
-        $this->validate();
-
         return $this->language;
     }
 
-    private function validate(): void
+    public function __toString(): string
     {
-
+        return $this->toPrimitiveType();
     }
 }

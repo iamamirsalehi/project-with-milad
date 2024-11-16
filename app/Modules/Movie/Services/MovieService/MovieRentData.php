@@ -4,13 +4,14 @@ namespace App\Modules\Movie\Services\MovieService;
 
 use App\Modules\Movie\Enums\MovieRentType;
 use App\Modules\Movie\Models\IMDBID;
+use App\Modules\User\Models\UserID;
 
 readonly class MovieRentData
 {
     public function __construct(
         private IMDBID        $IMDBID,
         private MovieRentType $rentType,
-        private int           $userID,
+        private UserID        $userID,
     )
     {
     }
@@ -25,7 +26,7 @@ readonly class MovieRentData
         return $this->rentType;
     }
 
-    public function getUserID(): int
+    public function getUserID(): UserID
     {
         return $this->userID;
     }

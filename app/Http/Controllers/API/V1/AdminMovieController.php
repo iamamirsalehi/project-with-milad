@@ -8,15 +8,15 @@ use App\Http\Controllers\Requests\API\V1\MovieRequest;
 use App\Http\Controllers\Requests\API\V1\UploadMovieRequest;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Services\MovieService\MovieService;
-use App\Modules\Movie\Services\VideoUploader\HttpVideoUploaderService;
+use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 readonly class AdminMovieController
 {
     public function __construct(
-        private MovieService             $movieService,
-        private HttpVideoUploaderService $videoUploaderService,
+        private MovieService         $movieService,
+        private VideoUploaderService $videoUploaderService,
     )
     {
     }
@@ -32,12 +32,12 @@ readonly class AdminMovieController
 
         return JsonResponse::ok('', [
             'title' => $movie->title,
-            'language' => $movie->language,
-            'country' => $movie->country,
-            'poster' => $movie->poster,
+            'language' => $movie->language->toPrimitiveType(),
+            'country' => $movie->country->toPrimitiveType(),
+            'poster' => $movie->poster->toPrimitiveType(),
             'url' => $movie->url,
-            'imdbRating' => $movie->imdb_rating,
-            'imdbID' => $movie->imdb_id,
+            'imdbRating' => $movie->imdb_rating->toPrimitiveType(),
+            'imdbID' => $movie->imdb_id->toPrimitiveType(),
             'imdbVotes' => $movie->imdb_votes,
         ]);
     }

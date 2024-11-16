@@ -22,7 +22,7 @@ readonly class MovieService
      */
     public function add(IMDBID $imdbID): void
     {
-        if ($this->movieRepository->exists($imdbID->get())) {
+        if ($this->movieRepository->exists($imdbID)) {
             throw MovieApplicationException::movieAlreadyExists();
         }
 

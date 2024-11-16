@@ -3,7 +3,6 @@
 namespace App\Modules\Subscription\Services\SubscriptionService;
 
 use App\Contracts\Repositories\ISubscriptionRepository;
-use App\Modules\Movie\Exceptions\MovieApplicationException;
 use App\Modules\Subscription\Exceptions\SubscriptionApplicationExceptions;
 use App\Modules\Subscription\Models\Subscription;
 
@@ -15,11 +14,11 @@ readonly class SubscriptionService
 
     /**
      * @throws SubscriptionApplicationExceptions
-     * @throws MovieApplicationException
      */
-    public function add(SubscriptionData $data): void
+    public function add(NewSubscription $data): void
     {
-        if (false === is_null($this->subscriptionRepository->findByName($data->getName()))) {
+        $subscription = $this->subscriptionRepository->findByName($data->getName());
+        if (false === is_null($subscription)) {
             throw SubscriptionApplicationExceptions::subscriptionAlreadyExists();
         }
 

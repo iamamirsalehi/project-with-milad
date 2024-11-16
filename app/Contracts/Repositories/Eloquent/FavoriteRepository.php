@@ -4,11 +4,13 @@ namespace App\Contracts\Repositories\Eloquent;
 
 use App\Contracts\Repositories\IFavoriteRepository;
 use App\Modules\Favorite\Models\FavoriteMovie;
+use App\Modules\Movie\Models\MovieID;
+use App\Modules\User\Models\UserID;
 use Illuminate\Database\Eloquent\Collection;
 
 class FavoriteRepository extends EloquentBaseRepository implements IFavoriteRepository
 {
-    public function exists(int $movieID, int $userID): bool
+    public function exists(MovieID $movieID, UserID $userID): bool
     {
         return $this->model->newQuery()
             ->where('user_id', $userID)
@@ -21,7 +23,7 @@ class FavoriteRepository extends EloquentBaseRepository implements IFavoriteRepo
         $favoriteMovie->save();
     }
 
-    public function getAllByUserID(int $userID): Collection
+    public function getAllByUserID(UserID $userID): Collection
     {
         return $this->model->newQuery()
             ->with(['movie'])
@@ -29,7 +31,7 @@ class FavoriteRepository extends EloquentBaseRepository implements IFavoriteRepo
             ->get();
     }
 
-    public function findByUserIDAndMovieID(int $userID, int $movieID): ?FavoriteMovie
+    public function findByUserIDAndMovieID(UserID $userID, MovieID $movieID): ?FavoriteMovie
     {
         return $this->model->newQuery()
             ->where('user_id', $userID)

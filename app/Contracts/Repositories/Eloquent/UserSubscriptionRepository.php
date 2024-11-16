@@ -3,7 +3,9 @@
 namespace App\Contracts\Repositories\Eloquent;
 
 use App\Contracts\Repositories\IUserSubscriptionRepository;
+use App\Modules\Subscription\Models\SubscriptionID;
 use App\Modules\Subscription\Models\UserSubscription;
+use App\Modules\User\Models\UserID;
 
 class UserSubscriptionRepository extends EloquentBaseRepository implements IUserSubscriptionRepository
 {
@@ -12,7 +14,7 @@ class UserSubscriptionRepository extends EloquentBaseRepository implements IUser
         $userSubscription->save();
     }
 
-    public function exists(int $userID, int $subscriptionID): bool
+    public function exists(UserID $userID, SubscriptionID $subscriptionID): bool
     {
         return $this->model->newQuery()
             ->where('user_id', $userID)
@@ -20,7 +22,7 @@ class UserSubscriptionRepository extends EloquentBaseRepository implements IUser
             ->exists();
     }
 
-    public function findByUserID(int $userID): ?UserSubscription
+    public function findByUserID(UserID $userID): ?UserSubscription
     {
         return $this->model->newQuery()->where('user_id', $userID)->first();
     }

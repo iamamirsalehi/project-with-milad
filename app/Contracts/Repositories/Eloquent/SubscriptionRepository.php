@@ -4,6 +4,7 @@ namespace App\Contracts\Repositories\Eloquent;
 
 use App\Contracts\Repositories\ISubscriptionRepository;
 use App\Modules\Subscription\Models\Subscription;
+use App\Modules\Subscription\Models\SubscriptionID;
 
 class SubscriptionRepository extends EloquentBaseRepository implements ISubscriptionRepository
 {
@@ -12,7 +13,7 @@ class SubscriptionRepository extends EloquentBaseRepository implements ISubscrip
         $subscription->save();
     }
 
-    public function findByID(int $id): ?Subscription
+    public function findByID(SubscriptionID $id): ?Subscription
     {
         return $this->model->newQuery()->where('id', $id)->first();
     }
@@ -22,7 +23,7 @@ class SubscriptionRepository extends EloquentBaseRepository implements ISubscrip
         return $this->model->newQuery()->where('name', $name)->first();
     }
 
-    public function exists(int $id): bool
+    public function exists(SubscriptionID $id): bool
     {
         return $this->model->newQuery()->where('id', $id)->exists();
     }

@@ -2,18 +2,18 @@
 
 namespace App\Modules\Subscription\Models;
 
-use App\Modules\Movie\Exceptions\MovieApplicationException;
-use App\Modules\Movie\Models\DurationInMonth;
-use App\Modules\Movie\Models\Price;
 use App\Modules\Subscription\Exceptions\SubscriptionApplicationExceptions;
+use App\Modules\Subscription\Models\Casts\PriceCast;
+use App\Modules\Subscription\Models\Casts\SubscriptionIDCast;
+use App\Modules\User\Models\UserID;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 /**
- * @property      int $id
+ * @property      SubscriptionID $id
  * @property-read string $name
- * @property-read int $price
- * @property-read int $duration_in_month
+ * @property-read Price $price
+ * @property-read DurationInMonth $duration_in_month
  * @property      Carbon $created_at
  * @property      Carbon $updated_at
  * */
@@ -21,9 +21,15 @@ class Subscription extends Model
 {
     protected $guarded = [];
 
-    /**
-     * @throws MovieApplicationException
-     */
+    protected function casts(): array
+    {
+        return [
+            'id' => SubscriptionIDCast::class,
+            'price' => PriceCast::class,
+            'duration_in_month' => DurationInMonth::class,
+        ];
+    }
+
     public static function new(
         string          $name,
         Price           $price,
@@ -32,16 +38,13 @@ class Subscription extends Model
     {
         $newSubscription = new self();
         $newSubscription->name = $name;
-        $newSubscription->price = $price->get();
-        $newSubscription->duration_in_month = $durationInMonth->get();
+        $newSubscription->price = $price;
+        $newSubscription->duration_in_month = $durationInMonth;
 
         return $newSubscription;
     }
 
-    /**
-     * @throws SubscriptionApplicationExceptions
-     */
-    public function subscribe(int $userID, Carbon $expiresAt): UserSubscription
+    public function subscribe(UserID $userID, ExpiresAt $expiresAt): UserSubscription
     {
         return UserSubscription::new($userID, $this->id, $expiresAt);
     }

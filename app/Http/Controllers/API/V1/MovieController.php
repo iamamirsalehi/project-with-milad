@@ -6,13 +6,14 @@ use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
 use App\Http\Controllers\Requests\API\V1\MovieRequest;
 use App\Http\Controllers\Requests\API\V1\RentRequest;
+use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Services\MovieService\MovieService;
 use Illuminate\Http\Response;
 
 readonly class MovieController
 {
     public function __construct(
-        private MovieService    $movieService,
+        private MovieService $movieService,
     )
     {
     }
@@ -21,20 +22,20 @@ readonly class MovieController
     {
         $imdbID = $request->get('imdb_id');
         try {
-            $movie = $this->movieService->getIfAvailable($imdbID);
+            $movie = $this->movieService->getIfAvailable(new IMDBID($imdbID));
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
 
         return JsonResponse::ok('', [
             'title' => $movie->title,
-            'language' => $movie->language,
-            'country' => $movie->country,
-            'poster' => $movie->poster,
+            'language' => $movie->language->toPrimitiveType(),
+            'country' => $movie->country->toPrimitiveType(),
+            'poster' => $movie->poster->toPrimitiveType(),
             'url' => $movie->url,
-            'imdbRating' => $movie->imdb_rating,
-            'imdbID' => $movie->imdb_id,
-            'imdbVotes' => $movie->imdb_votes,
+            'imdbRating' => $movie->imdb_rating->toPrimitiveType(),
+            'imdbID' => $movie->imdb_id->toPrimitiveType(),
+            'imdbVotes' => $movie->imdb_votes->toPrimitiveType(),
         ]);
     }
 
@@ -45,7 +46,7 @@ readonly class MovieController
 
         try {
 //            $this->movieService->ren
-        }catch (BusinessException $exception) {
+        } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
 
