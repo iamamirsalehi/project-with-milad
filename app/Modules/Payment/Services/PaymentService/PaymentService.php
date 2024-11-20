@@ -81,6 +81,7 @@ readonly class PaymentService
 
         $this->paymentProvider->verify();
 
+        //TODO: Notify user for payment detail
         if ($invoice->type == InvoiceType::Subscription) {
             $userSubscription = $this->userSubscriptionRepository->findByID(new UserSubscriptionID($invoiceID->toPrimitiveType()));
             if (is_null($userSubscription)) {
@@ -91,10 +92,11 @@ readonly class PaymentService
 
             $this->userSubscriptionRepository->save($userSubscription);
 
+            //TODO: just handle it in pay() method of payment not invoice
             $payment->pay();
             $invoice->pay();
 
-            $this->dispatcher->dispatch();
+//            $this->dispatcher->dispatch();
             return;
         }
 
