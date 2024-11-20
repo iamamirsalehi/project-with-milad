@@ -2,7 +2,7 @@
 
 namespace App\Modules\Subscription\Models;
 
-use App\Modules\Subscription\Exceptions\SubscriptionApplicationExceptions;
+use App\Modules\Subscription\Models\Casts\DurationInMonthCast;
 use App\Modules\Subscription\Models\Casts\PriceCast;
 use App\Modules\Subscription\Models\Casts\SubscriptionIDCast;
 use App\Modules\User\Models\UserID;
@@ -26,7 +26,7 @@ class Subscription extends Model
         return [
             'id' => SubscriptionIDCast::class,
             'price' => PriceCast::class,
-            'duration_in_month' => DurationInMonth::class,
+            'duration_in_month' => DurationInMonthCast::class,
         ];
     }
 

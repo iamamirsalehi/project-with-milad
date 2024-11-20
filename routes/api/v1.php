@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\API\V1\AdminMovieController;
-use App\Http\Controllers\API\V1\MovieController;
+use App\Http\Controllers\API\V1\UserMovieController;
 use App\Http\Controllers\API\V1\AdminSubscriptionController;
 use App\Http\Controllers\API\V1\UserSubscriptionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\UserFavoriteMovieController;
+use App\Http\Controllers\API\V1\UserPaymentController;
 
 Route::prefix('v1')->group(function () {
 
@@ -22,12 +23,18 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('movie')->group(function () {
-        Route::get('', [MovieController::class, 'get']);
-        Route::post('rent', [MovieController::class, 'rent']);
+        Route::get('genres', [UserMovieController::class, 'genres']);
+        Route::get('list', [UserMovieController::class, 'list']);
+        Route::get('', [UserMovieController::class, 'get']);
+        Route::post('watch', [UserMovieController::class, 'watch']);
         Route::post('favorite', [UserFavoriteMovieController::class, 'addToFavorite']);
         Route::get('favorite', [UserFavoriteMovieController::class, 'getUserFavoriteMovies']);
         Route::delete('favorite', [UserFavoriteMovieController::class, 'removeUserFavoriteMovies']);
     });
 
+    Route::post('rent', [UserMovieController::class, 'rent']);
     Route::post('subscribe', [UserSubscriptionController::class, 'subscribe']);
+
+    Route::post('pay', [UserPaymentController::class, 'pay']);
+    Route::post('verify', [UserPaymentController::class, 'verify']);
 });

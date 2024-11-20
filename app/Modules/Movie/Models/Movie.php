@@ -12,6 +12,8 @@ use App\Modules\Movie\Models\Casts\LanguageCast;
 use App\Modules\Movie\Models\Casts\MovieIDCast;
 use App\Modules\Movie\Models\Casts\PosterCast;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Carbon;
 
 /**
@@ -35,7 +37,7 @@ class Movie extends Model
     protected function casts(): array
     {
         return [
-            'id' => MovieIDCast::class,
+//            'id' => MovieIDCast::class,
             'language' => LanguageCast::class,
             'country' => CountryCast::class,
             'poster' => PosterCast::class,
@@ -115,5 +117,10 @@ class Movie extends Model
         }
 
         $this->status = MovieStatus::Draft;
+    }
+
+    public function genres(): HasManyThrough
+    {
+        return $this->hasManyThrough(Genre::class, MovieGenre::class, 'movie_id', 'id');
     }
 }

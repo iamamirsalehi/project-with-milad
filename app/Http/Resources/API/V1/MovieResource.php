@@ -15,14 +15,15 @@ class MovieResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'title' => $this->movie->title,
-            'language' => $this->movie->language,
-            'country' => $this->movie->country,
-            'poster' => $this->movie->poster,
-            'url' => $this->movie->url,
-            'imdbRating' => $this->movie->imdb_rating,
-            'imdbID' => $this->movie->imdb_id,
-            'imdbVotes' => $this->movie->imdb_votes,
+            'title' => $this->title,
+            'language' => $this->language->toPrimitiveType(),
+            'country' => $this->country->toPrimitiveType(),
+            'poster' => $this->poster->toPrimitiveType(),
+            'url' => $this->url,
+            'imdbRating' => $this->imdb_rating->toPrimitiveType(),
+            'imdbID' => $this->imdb_id->toPrimitiveType(),
+            'imdbVotes' => $this->imdb_votes,
+            'genres' => GenreResource::collection($this->genres),
         ];
     }
 }

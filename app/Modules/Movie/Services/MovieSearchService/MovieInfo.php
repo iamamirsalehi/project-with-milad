@@ -18,7 +18,8 @@ readonly class MovieInfo
         private Poster     $poster,
         private IMDBRating $imdbRating,
         private IMDBID     $imdbID,
-        private IMDBVote   $imdbVotes
+        private IMDBVote   $imdbVotes,
+        private array      $genres,
     )
     {
     }
@@ -56,5 +57,10 @@ readonly class MovieInfo
     public function getImdbVotes(): IMDBVote
     {
         return $this->imdbVotes;
+    }
+
+    public function getGenres(): array
+    {
+        return $this->genres;
     }
 }

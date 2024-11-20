@@ -5,6 +5,7 @@ namespace App\Contracts\Repositories\Eloquent;
 use App\Contracts\Repositories\IUserSubscriptionRepository;
 use App\Modules\Subscription\Models\SubscriptionID;
 use App\Modules\Subscription\Models\UserSubscription;
+use App\Modules\Subscription\Models\UserSubscriptionID;
 use App\Modules\User\Models\UserID;
 
 class UserSubscriptionRepository extends EloquentBaseRepository implements IUserSubscriptionRepository
@@ -25,5 +26,20 @@ class UserSubscriptionRepository extends EloquentBaseRepository implements IUser
     public function findByUserID(UserID $userID): ?UserSubscription
     {
         return $this->model->newQuery()->where('user_id', $userID)->first();
+    }
+
+    public function findLatestByUserID(UserID $userID): ?UserSubscription
+    {
+        return $this->model->newQuery()
+            ->where('user_id', $userID)
+            ->orderByDesc('id')
+            ->first();
+    }
+
+    public function findByID(UserSubscriptionID $id): ?UserSubscription
+    {
+        return $this->model->newQuery()
+            ->where('id', $id)
+            ->first();
     }
 }

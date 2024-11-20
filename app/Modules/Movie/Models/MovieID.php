@@ -23,6 +23,6 @@ readonly class MovieID
 
     public function __toString(): string
     {
-        return $this->toPrimitiveType();
+        return (string)$this->id;
     }
 }

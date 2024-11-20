@@ -12,11 +12,14 @@ return new class extends Migration {
     {
         Schema::create('user_subscriptions', function (Blueprint $table) {
             $table->id();
+
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
 
             $table->unsignedBigInteger('subscription_id');
             $table->foreign('subscription_id')->references('id')->on('subscriptions')->cascadeOnDelete();
+
+            $table->string('status');
 
             $table->dateTime('expires_at');
 

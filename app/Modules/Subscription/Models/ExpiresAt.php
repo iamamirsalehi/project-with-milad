@@ -10,20 +10,20 @@ readonly class ExpiresAt
     /**
      * @throws SubscriptionApplicationExceptions
      */
-    public function __construct(private Carbon $expiresAt)
+    public function __construct(private string $expiresAt)
     {
-        if ($this->expiresAt->isPast()) {
+        if (Carbon::parse($this->expiresAt)->isPast()) {
             throw SubscriptionApplicationExceptions::invalidExpiresAt();
         }
     }
 
     public function toCarbon(): Carbon
     {
-        return $this->expiresAt;
+        return Carbon::parse($this->expiresAt);
     }
 
     public function __toString(): string
     {
-        return $this->expiresAt->toDateTimeString();
+        return $this->expiresAt;
     }
 }

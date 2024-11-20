@@ -4,11 +4,13 @@ namespace App\Modules\Movie\Services\MovieSearchService;
 
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 use App\Modules\Movie\Models\Country;
+use App\Modules\Movie\Models\GenreName;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Models\IMDBRating;
 use App\Modules\Movie\Models\IMDBVote;
 use App\Modules\Movie\Models\Language;
 use App\Modules\Movie\Models\Poster;
+use App\Modules\Movie\Utilities\GenreStringToObjectConvertor;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,7 +54,8 @@ class OMDBMovieSearchService implements IMovieSearchService
             new Poster($parsedBody['Poster']),
             new IMDBRating(floatval($parsedBody['imdbRating'])),
             new IMDBID($parsedBody['imdbID']),
-            new IMDBVote($this->imdbVoteToInt($parsedBody['imdbVotes']))
+            new IMDBVote($this->imdbVoteToInt($parsedBody['imdbVotes'])),
+            GenreStringToObjectConvertor::convert($parsedBody['Genre']),
         );
     }
 

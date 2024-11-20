@@ -11,6 +11,7 @@ class RentRequest extends FormRequest
         return [
             'imdb_id' => 'required|string|exists:movies,imdb_id',
             'user_id' => 'required|numeric|exists:users,id',
+            'hours' => 'required|numeric',
         ];
     }
 }

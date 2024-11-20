@@ -32,6 +32,15 @@ class MovieApplicationException extends BusinessException
     private const CAN_NOT_HAVE_MORE_THAN_TWO_RENTED_MOVIE = 'can not have more than two rented movie';
     private const INVALID_MOVIE_ID = 'invalid movie id';
     private const INVALID_MOVIE_RENT_ID = 'invalid movie rent id';
+    private const INVALID_EXPIRES_AT = 'invalid expires at';
+    private const INVALID_HOURS = 'invalid hours';
+    private const INVALID_MOVIE_GENRE_ID = 'invalid movie genre id';
+    private const INVALID_MOVIE_GENRE_NAME = 'invalid movie genre name';
+    private const INVALID_GENRE_ID = 'invalid genre id';
+    private const MOVIE_RENT_DOES_NOT_EXIST = 'movie rent does not exist';
+    private const MOVIE_RENT_IS_ALREADY_PAID = 'movie rent is already paid';
+    private const MOVIE_RENT_IS_ALREADY_STARTED_TO_WATCHING = 'movie rent is already started to watching';
+    private const MOVIE_IS_NOT_ACCESSIBLE = 'movie is not accessible';
 
     public static function movieAlreadyExists(): self
     {
@@ -161,5 +170,50 @@ class MovieApplicationException extends BusinessException
     public static function invalidMovieRentID(): self
     {
         return new self(self::INVALID_MOVIE_RENT_ID);
+    }
+
+    public static function invalidExpiresAt(): self
+    {
+        return new self(self::INVALID_EXPIRES_AT);
+    }
+
+    public static function invalidHours(): self
+    {
+        return new self(self::INVALID_HOURS);
+    }
+
+    public static function invalidMovieGenreID(): self
+    {
+        return new self(self::INVALID_MOVIE_GENRE_ID);
+    }
+
+    public static function invalidMovieGenreName(): self
+    {
+        return new self(self::INVALID_MOVIE_GENRE_NAME);
+    }
+
+    public static function invalidGenreID(): self
+    {
+        return new self(self::INVALID_GENRE_ID);
+    }
+
+    public static function movieRentDoesNotExist(): self
+    {
+        return new self(self::MOVIE_RENT_DOES_NOT_EXIST);
+    }
+
+    public static function movieRentIsAlreadyPaid(): self
+    {
+        return new self(self::MOVIE_RENT_IS_ALREADY_PAID);
+    }
+
+    public static function movieRentIsAlreadyStartedToWatching(): self
+    {
+        return new self(self::MOVIE_RENT_IS_ALREADY_STARTED_TO_WATCHING);
+    }
+
+    public static function movieIsNotAccessible(): self
+    {
+        return new self(self::MOVIE_IS_NOT_ACCESSIBLE);
     }
 }

@@ -6,6 +6,7 @@ use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
 use App\Http\Controllers\Requests\API\V1\MovieRequest;
 use App\Http\Controllers\Requests\API\V1\UploadMovieRequest;
+use App\Http\Resources\API\V1\MovieResource;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Services\MovieService\MovieService;
 use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
@@ -21,7 +22,7 @@ readonly class AdminMovieController
     {
     }
 
-    public function get(MovieRequest $request): Response
+    public function get(MovieRequest $request): Response|MovieResource
     {
         $imdbID = $request->get('imdb_id');
         try {
@@ -30,16 +31,7 @@ readonly class AdminMovieController
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
 
-        return JsonResponse::ok('', [
-            'title' => $movie->title,
-            'language' => $movie->language->toPrimitiveType(),
-            'country' => $movie->country->toPrimitiveType(),
-            'poster' => $movie->poster->toPrimitiveType(),
-            'url' => $movie->url,
-            'imdbRating' => $movie->imdb_rating->toPrimitiveType(),
-            'imdbID' => $movie->imdb_id->toPrimitiveType(),
-            'imdbVotes' => $movie->imdb_votes,
-        ]);
+        return new MovieResource($movie);
     }
 
     public function add(MovieRequest $request): Response

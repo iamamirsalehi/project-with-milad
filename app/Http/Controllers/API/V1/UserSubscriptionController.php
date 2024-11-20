@@ -21,7 +21,7 @@ readonly class UserSubscriptionController
         $userID = $request->get('user_id');
         $subscriptionID = $request->get('subscription_id');
         try {
-            $this->userSubscriptionService->subscribe(
+            $invoiceID = $this->userSubscriptionService->subscribe(
                 new UserID($userID),
                 new SubscriptionID($subscriptionID),
             );
@@ -29,6 +29,8 @@ readonly class UserSubscriptionController
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }
 
-        return JsonResponse::created('subscribed');
+        return JsonResponse::created('', [
+            'invoice_id' => $invoiceID->toPrimitiveType(),
+        ]);
     }
 }
