@@ -10,6 +10,8 @@ use App\Contracts\Repositories\Eloquent\MovieRentRepository;
 use App\Contracts\Repositories\Eloquent\MovieRepository;
 use App\Contracts\Repositories\Eloquent\SubscriptionRepository;
 use App\Contracts\Repositories\Eloquent\UserSubscriptionRepository;
+use App\Contracts\Resolver\IResolver;
+use App\Contracts\Resolver\LaravelResolver;
 use App\Modules\Movie\Models\Genre;
 use App\Modules\Movie\Models\Movie;
 use App\Modules\Movie\Models\MovieGenre;
@@ -79,8 +81,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IMessageBus::class, RedisMessageBus::class);
         $this->app->bind(IVideoUploader::class, LocalStorageUploader::class);
 
+        $this->app->singleton(IResolver::class, function ($app) {
+            return new LaravelResolver($app);
+        });
+
         $this->app->singleton(PaymentRegistry::class, function ($app) {
-            $register = new PaymentRegistry();
+            $register = new PaymentRegistry($app->make(IResolver::class));
 
             $register->register(PaymentMethod::Saman, SamanPayment::class);
             $register->register(PaymentMethod::Mellat, MellatPayment::class);
