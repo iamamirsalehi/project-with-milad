@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API;
 
 use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
-use App\Http\Controllers\Requests\API\V1\AddToFavoriteRequest;
-use App\Http\Controllers\Requests\API\V1\RemoveFavoriteRequest;
-use App\Http\Controllers\Requests\API\V1\UserFavoriteMoviesRequest;
-use App\Http\Resources\API\V1\MovieResource;
+use App\Http\Controllers\Requests\API\AddToFavoriteRequest;
+use App\Http\Controllers\Requests\API\RemoveFavoriteRequest;
+use App\Http\Controllers\Requests\API\UserFavoriteMoviesRequest;
+use App\Http\Resources\API\MovieResource;
 use App\Modules\Favorite\Services\FavoriteService\FavoriteService;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\User\Models\UserID;

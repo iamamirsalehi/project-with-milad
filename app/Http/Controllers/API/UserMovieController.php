@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API;
 
 use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Repositories\IGenreRepository;
 use App\Contracts\Responses\JsonResponse;
-use App\Http\Controllers\Requests\API\V1\MovieRequest;
-use App\Http\Controllers\Requests\API\V1\WatchRequest;
-use App\Http\Resources\API\V1\GenreResource;
-use App\Http\Resources\API\V1\MovieResource;
+use App\Http\Controllers\Requests\API\MovieRequest;
+use App\Http\Controllers\Requests\API\WatchRequest;
+use App\Http\Resources\API\GenreResource;
+use App\Http\Resources\API\MovieResource;
 use App\Modules\Movie\Models\GenreName;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Services\MovieService\AllMovieFilter;
 use App\Modules\Movie\Services\MovieService\MovieService;
 use App\Modules\User\Models\UserID;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 readonly class UserMovieController

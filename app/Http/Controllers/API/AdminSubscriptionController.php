@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API;
 
 use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
-use App\Http\Controllers\Requests\API\V1\SubscriptionRequest;
+use App\Http\Controllers\Requests\API\SubscriptionRequest;
 use App\Modules\Subscription\Models\DurationInMonth;
 use App\Modules\Subscription\Models\Price;
 use App\Modules\Subscription\Services\SubscriptionService\NewSubscription;

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API;
 
 use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
-use App\Http\Controllers\Requests\API\V1\PayRentRequest;
-use App\Http\Controllers\Requests\API\V1\PaySubscriptionRequest;
-use App\Http\Controllers\Requests\API\V1\VerifyRequest;
+use App\Http\Controllers\Requests\API\PayRentRequest;
+use App\Http\Controllers\Requests\API\PaySubscriptionRequest;
+use App\Http\Controllers\Requests\API\VerifyRequest;
 use App\Modules\Movie\Models\Duration;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Payment\Enums\PaymentMethod;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Requests\API\V1;
+namespace App\Http\Controllers\Requests\API;
 
 use App\Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Foundation\Http\FormRequest;

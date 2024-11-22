@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API;
 
 use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Responses\JsonResponse;
-use App\Http\Controllers\Requests\API\V1\MovieRequest;
-use App\Http\Controllers\Requests\API\V1\UploadMovieRequest;
-use App\Http\Resources\API\V1\MovieResource;
+use App\Http\Controllers\Requests\API\MovieRequest;
+use App\Http\Controllers\Requests\API\UploadMovieRequest;
+use App\Http\Resources\API\MovieResource;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Services\MovieService\MovieService;
 use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
