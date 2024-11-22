@@ -14,7 +14,7 @@ readonly class LaravelResolver implements IResolver
     /**
      * @throws BindingResolutionException
      */
-    public function resolve(string $class): object
+    public function resolve(string $class)
     {
         return $this->container->make($class);
     }

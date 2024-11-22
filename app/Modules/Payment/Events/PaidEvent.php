@@ -9,7 +9,7 @@ class PaidEvent
 {
     use Dispatchable;
 
-    public function __construct(private Payment $payment)
+    public function __construct(public readonly Payment $payment)
     {
     }
 }

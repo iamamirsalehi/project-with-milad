@@ -4,5 +4,5 @@ namespace App\Contracts\Resolver;
 
 interface IResolver
 {
-    public function resolve(string $class): object;
+    public function resolve(string $class);
 }

@@ -7,24 +7,23 @@ use App\Contracts\Repositories\IMovieRepository;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 use App\Modules\Movie\Models\MovieRent;
 use App\Modules\Movie\Services\MovieService\NewMovieRent;
-use App\Modules\Payment\Exceptions\PaymentApplicationException;
 
 readonly class MovieRentService
 {
     public function __construct(
-        private IMovieRepository     $movieRepository,
-        private IMovieRentRepository $movieRentRepository,
+        private IMovieRepository          $movieRepository,
+        private IMovieRentRepository      $movieRentRepository,
+        private MovieRentPriceCalculation $movieRentPriceCalculation,
     )
     {
     }
 
     /**
      * @throws MovieApplicationException
-     * @throws PaymentApplicationException
      */
     public function rent(NewMovieRent $data): void
     {
-        $movie = $this->movieRepository->findByIMDBID($data->getIMDBID());
+        $movie = $this->movieRepository->findByID($data->getMovieID());
         if (is_null($movie)) {
             throw MovieApplicationException::couldNotFindMovie();
         }
@@ -38,7 +37,9 @@ readonly class MovieRentService
             throw MovieApplicationException::canNotHaveMoreThanTwoRentedMovie();
         }
 
-        $rentedMovie = MovieRent::new($movie->id, $data->getUserID(), $data->getDuration());
+        $calculatedDuration = $this->movieRentPriceCalculation->calculate($data->getDuration());
+
+        $rentedMovie = MovieRent::new($movie->id, $data->getUserID(), $calculatedDuration);
 
         $this->movieRentRepository->save($rentedMovie);
     }

@@ -7,6 +7,7 @@ use App\Modules\Movie\Enums\MovieStatus;
 use App\Modules\Movie\Models\Genre;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Models\Movie;
+use App\Modules\Movie\Models\MovieID;
 use Illuminate\Support\Collection;
 
 class MovieRepository extends EloquentBaseRepository implements IMovieRepository
@@ -49,5 +50,12 @@ class MovieRepository extends EloquentBaseRepository implements IMovieRepository
         }
 
         return $query->get();
+    }
+
+    public function findByID(MovieID $id): ?Movie
+    {
+        return $this->model->newQuery()
+            ->where('id', $id)
+            ->first();
     }
 }
