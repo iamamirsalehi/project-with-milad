@@ -16,11 +16,11 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->unsignedBigInteger('invoice_id');
-            $table->foreign('invoice_id')->references('id')->on('invoices');
-
+            $table->unsignedBigInteger('amount');
             $table->string('status');
             $table->string('method');
+
+            $table->morphs('paymentable');
 
             $table->timestamps();
         });

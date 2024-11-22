@@ -4,15 +4,15 @@ namespace App\Modules\Payment\Models;
 
 use App\Modules\Payment\Exceptions\PaymentApplicationException;
 
-class InvoiceID
+readonly class PaymentableID
 {
     /**
      * @throws PaymentApplicationException
      */
     public function __construct(private int $id)
     {
-        if ($this->id <= 0){
-            throw PaymentApplicationException::invalidInvoiceID();
+        if ($this->id <= 0) {
+            throw PaymentApplicationException::invalidPaymentableId();
         }
     }
 
@@ -21,7 +21,7 @@ class InvoiceID
         return $this->id;
     }
 
-    public function __tostring(): string
+    public function __toString(): string
     {
         return (string)$this->id;
     }

@@ -3,7 +3,6 @@
 use App\Http\Controllers\API\V1\AdminMovieController;
 use App\Http\Controllers\API\V1\UserMovieController;
 use App\Http\Controllers\API\V1\AdminSubscriptionController;
-use App\Http\Controllers\API\V1\UserSubscriptionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\V1\UserFavoriteMovieController;
 use App\Http\Controllers\API\V1\UserPaymentController;
@@ -32,9 +31,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('favorite', [UserFavoriteMovieController::class, 'removeUserFavoriteMovies']);
     });
 
-    Route::post('rent', [UserMovieController::class, 'rent']);
-    Route::post('subscribe', [UserSubscriptionController::class, 'subscribe']);
-
-    Route::post('pay', [UserPaymentController::class, 'pay']);
+    Route::post('rent/pay', [UserPaymentController::class, 'payRent']);
+    Route::post('subscription/pay', [UserPaymentController::class, 'paySubscription']);
     Route::post('verify', [UserPaymentController::class, 'verify']);
 });

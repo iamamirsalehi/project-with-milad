@@ -2,11 +2,13 @@
 
 namespace App\Modules\Subscription\Models;
 
+use App\Modules\Payment\Models\Payment;
 use App\Modules\Subscription\Models\Casts\DurationInMonthCast;
 use App\Modules\Subscription\Models\Casts\PriceCast;
 use App\Modules\Subscription\Models\Casts\SubscriptionIDCast;
 use App\Modules\User\Models\UserID;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -47,5 +49,10 @@ class Subscription extends Model
     public function subscribe(UserID $userID, ExpiresAt $expiresAt): UserSubscription
     {
         return UserSubscription::new($userID, $this->id, $expiresAt);
+    }
+
+    public function payment(): MorphOne
+    {
+        return $this->morphOne(Payment::class, 'paymentable');
     }
 }

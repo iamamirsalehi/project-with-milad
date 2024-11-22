@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Contracts\Repositories\Eloquent\FavoriteRepository;
 use App\Contracts\Repositories\Eloquent\GenreRepository;
-use App\Contracts\Repositories\Eloquent\InvoiceRepository;
 use App\Contracts\Repositories\Eloquent\MovieRentRepository;
 use App\Contracts\Repositories\Eloquent\MovieRepository;
 use App\Contracts\Repositories\Eloquent\PaymentRepository;
@@ -13,7 +12,6 @@ use App\Contracts\Repositories\Eloquent\UserRepository;
 use App\Contracts\Repositories\Eloquent\UserSubscriptionRepository;
 use App\Contracts\Repositories\IFavoriteRepository;
 use App\Contracts\Repositories\IGenreRepository;
-use App\Contracts\Repositories\IInvoiceRepository;
 use App\Contracts\Repositories\IMovieRentRepository;
 use App\Contracts\Repositories\IMovieRepository;
 use App\Contracts\Repositories\IPaymentRepository;
@@ -24,7 +22,6 @@ use App\Modules\Favorite\Models\FavoriteMovie;
 use App\Modules\Movie\Models\Genre;
 use App\Modules\Movie\Models\Movie;
 use App\Modules\Movie\Models\MovieRent;
-use App\Modules\Payment\Models\Invoice;
 use App\Modules\Payment\Models\Payment;
 use App\Modules\Subscription\Models\Subscription;
 use App\Modules\Subscription\Models\UserSubscription;
@@ -78,12 +75,6 @@ class RepositoryServiceProvider extends ServiceProvider
             $movieRentEloquent = new MovieRent();
 
             return new MovieRentRepository($movieRentEloquent);
-        });
-
-        $this->app->bind(IInvoiceRepository::class, function ($app) {
-            $invoiceEloquent = new Invoice();
-
-            return new InvoiceRepository($invoiceEloquent);
         });
 
         $this->app->bind(IGenreRepository::class, function ($app){

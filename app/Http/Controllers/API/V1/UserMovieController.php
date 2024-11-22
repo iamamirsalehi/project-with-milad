@@ -6,18 +6,13 @@ use App\Contracts\Exceptions\BusinessException;
 use App\Contracts\Repositories\IGenreRepository;
 use App\Contracts\Responses\JsonResponse;
 use App\Http\Controllers\Requests\API\V1\MovieRequest;
-use App\Http\Controllers\Requests\API\V1\RentRequest;
 use App\Http\Controllers\Requests\API\V1\WatchRequest;
 use App\Http\Resources\API\V1\GenreResource;
 use App\Http\Resources\API\V1\MovieResource;
-use App\Modules\Movie\Models\Duration;
 use App\Modules\Movie\Models\GenreName;
 use App\Modules\Movie\Models\IMDBID;
-use App\Modules\Movie\Services\MovieRentService\MovieRentService;
 use App\Modules\Movie\Services\MovieService\AllMovieFilter;
 use App\Modules\Movie\Services\MovieService\MovieService;
-use App\Modules\Movie\Services\MovieService\NewMovieRent;
-use App\Modules\Payment\Models\Payment;
 use App\Modules\User\Models\UserID;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Request;
@@ -27,7 +22,6 @@ readonly class UserMovieController
 {
     public function __construct(
         private MovieService     $movieService,
-        private MovieRentService $movieRentService,
         private IGenreRepository $genreRepository,
     )
     {
@@ -68,29 +62,6 @@ readonly class UserMovieController
         }
 
         return new MovieResource($movie);
-    }
-
-    public function rent(RentRequest $request): Response
-    {
-        $imdbID = $request->get('imdb_id');
-        $userID = $request->get('user_id');
-        $hours = $request->get('hours');
-
-        try {
-            $newMovieRent = new NewMovieRent(
-                new IMDBID($imdbID),
-                new UserID($userID),
-                new Duration($hours)
-            );
-
-            $invoiceID = $this->movieRentService->rent($newMovieRent);
-        } catch (BusinessException $exception) {
-            return JsonResponse::unprocessableEntity($exception->getMessage());
-        }
-
-        return JsonResponse::created('', [
-            'invoice_id' => $invoiceID->toPrimitiveType(),
-        ]);
     }
 
     public function watch(WatchRequest $request): Response

@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Requests\API\V1;
 use App\Modules\Payment\Enums\PaymentMethod;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PayRequest extends FormRequest
+class PaySubscriptionRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'invoice_id' => 'required|numeric',
+            'user_id' => 'required|string|exists:users,id',
+            'subscription_id' => 'required|string|exists:subscriptions,id',
             'method' => 'required|string|in:' . PaymentMethod::casesAsString() . '',
         ];
     }
