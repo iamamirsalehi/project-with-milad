@@ -20,8 +20,11 @@ use App\Modules\Movie\Services\MovieService\MovieService;
 use App\Modules\Movie\Services\VideoUploader\IVideoUploader;
 use App\Modules\Movie\Services\VideoUploader\LocalStorageUploader;
 use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
+use App\Modules\Payment\Enums\PaymentMethod;
 use App\Modules\Payment\Services\PaymentProviders\IPaymentMethod;
+use App\Modules\Payment\Services\PaymentProviders\PaymentMethods\MellatPayment;
 use App\Modules\Payment\Services\PaymentProviders\PaymentMethods\SamanPayment;
+use App\Modules\Payment\Services\PaymentProviders\PaymentRegistry;
 use App\Modules\Subscription\Models\Subscription;
 use App\Modules\Subscription\Models\UserSubscription;
 use Illuminate\Support\ServiceProvider;
@@ -75,6 +78,15 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(IMessageBus::class, RedisMessageBus::class);
         $this->app->bind(IVideoUploader::class, LocalStorageUploader::class);
+
+        $this->app->singleton(PaymentRegistry::class, function ($app) {
+            $register = new PaymentRegistry();
+
+            $register->register(PaymentMethod::Saman, SamanPayment::class);
+            $register->register(PaymentMethod::Mellat, MellatPayment::class);
+
+            return $register;
+        });
     }
 
     /**

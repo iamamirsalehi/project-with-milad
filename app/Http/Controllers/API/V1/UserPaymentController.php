@@ -10,9 +10,11 @@ use App\Http\Controllers\Requests\API\V1\VerifyRequest;
 use App\Modules\Movie\Models\Duration;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Payment\Enums\PaymentMethod;
+use App\Modules\Payment\Models\PaymentID;
 use App\Modules\Payment\Services\PaymentService\MovieRentPaymentService;
 use App\Modules\Payment\Services\PaymentService\NewMovieRentPayment;
 use App\Modules\Payment\Services\PaymentService\NewSubscriptionPayment;
+use App\Modules\Payment\Services\PaymentService\PaymentService;
 use App\Modules\Payment\Services\PaymentService\SubscriptionPayService;
 use App\Modules\Subscription\Models\SubscriptionID;
 use App\Modules\User\Models\UserID;
@@ -23,6 +25,7 @@ readonly class UserPaymentController
     public function __construct(
         private SubscriptionPayService  $subscriptionPayService,
         private MovieRentPaymentService $movieRentPaymentService,
+        private PaymentService          $paymentService,
     )
     {
     }
@@ -73,9 +76,9 @@ readonly class UserPaymentController
 
     public function verify(VerifyRequest $request): Response
     {
-        $invoiceID = $request->get('invoice_id');
+        $paymentID = $request->get('payment_id');
         try {
-            $this->paymentService->verify(new InvoiceID($invoiceID));
+            $this->paymentService->verify(new PaymentID($paymentID));
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }

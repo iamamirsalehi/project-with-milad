@@ -9,7 +9,7 @@ class VerifyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'invoice_id' => 'required|numeric|exists:invoices,id',
+            'payment_id' => 'required|numeric|exists:payments,id',
         ];
     }
 }

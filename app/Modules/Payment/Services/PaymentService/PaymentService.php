@@ -3,17 +3,19 @@
 namespace App\Modules\Payment\Services\PaymentService;
 
 use App\Contracts\Repositories\IPaymentRepository;
+use App\Modules\Payment\Events\PaidEvent;
 use App\Modules\Payment\Exceptions\PaymentApplicationException;
 use App\Modules\Payment\Models\Payment;
-use App\Modules\Payment\Services\PaymentProviders\PaymentMethodFactory;
+use App\Modules\Payment\Models\PaymentID;
+use App\Modules\Payment\Services\PaymentProviders\PaymentRegistry;
 use Illuminate\Contracts\Events\Dispatcher;
 
 readonly class PaymentService
 {
     public function __construct(
-        private IPaymentRepository   $paymentRepository,
-        private PaymentMethodFactory $paymentMethodFactory,
-        private Dispatcher           $dispatcher,
+        private IPaymentRepository $paymentRepository,
+        private PaymentRegistry    $paymentRegistry,
+        private Dispatcher         $dispatcher,
     )
     {
     }
@@ -33,11 +35,23 @@ readonly class PaymentService
 
         $this->paymentRepository->save($payment);
 
-        $paymentMethod = $this->paymentMethodFactory->getFrom($data->getPaymentMethod());
+        $this->paymentRegistry->resolve($data->getPaymentMethod())->pay($data->getAmount());
     }
 
-    public function verify(InvoiceID $invoiceID): void
+    /**
+     * @throws PaymentApplicationException
+     */
+    public function verify(PaymentID $paymentID): void
     {
+        $payment = $this->paymentRepository->findByID($paymentID);
+        if (is_null($payment)) {
+            throw PaymentApplicationException::invalidPaymentID();
+        }
 
+        $payment->pay();
+
+        $this->paymentRepository->save($payment);
+
+        $this->dispatcher->dispatch(new PaidEvent($payment));
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Contracts\Repositories\Eloquent;
 
 use App\Contracts\Repositories\IPaymentRepository;
-use App\Modules\Payment\Models\InvoiceID;
 use App\Modules\Payment\Models\Payment;
+use App\Modules\Payment\Models\PaymentID;
 use App\Modules\User\Models\UserID;
 
 class PaymentRepository extends EloquentBaseRepository implements IPaymentRepository
@@ -21,10 +21,10 @@ class PaymentRepository extends EloquentBaseRepository implements IPaymentReposi
         $payment->save();
     }
 
-    public function findByInvoiceID(InvoiceID $id): ?Payment
+    public function findByID(PaymentID $id): ?Payment
     {
         return $this->model->newQuery()
-            ->where('invoice_id', $id)
+            ->where('id', $id)
             ->first();
     }
 }
