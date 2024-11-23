@@ -23,7 +23,9 @@ use App\Modules\Movie\Services\VideoUploader\IVideoUploader;
 use App\Modules\Movie\Services\VideoUploader\LocalStorageUploader;
 use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
 use App\Modules\Payment\Enums\PaymentMethod;
+use App\Modules\Payment\Services\PaymentProviders\PaymentGatewayClass;
 use App\Modules\Payment\Services\PaymentProviders\IPaymentMethod;
+use App\Modules\Payment\Services\PaymentProviders\NewPaymentGateway;
 use App\Modules\Payment\Services\PaymentProviders\PaymentMethods\MellatPayment;
 use App\Modules\Payment\Services\PaymentProviders\PaymentMethods\SamanPayment;
 use App\Modules\Payment\Services\PaymentProviders\PaymentRegistry;
@@ -86,12 +88,12 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(PaymentRegistry::class, function ($app) {
-            $register = new PaymentRegistry($app->make(IResolver::class));
+            $gateways = [
+                new NewPaymentGateway(PaymentMethod::Saman, new PaymentGatewayClass(SamanPayment::class)),
+                new NewPaymentGateway(PaymentMethod::Mellat, new PaymentGatewayClass(MellatPayment::class))
+            ];
 
-            $register->register(PaymentMethod::Saman, SamanPayment::class);
-            $register->register(PaymentMethod::Mellat, MellatPayment::class);
-
-            return $register;
+            return new PaymentRegistry($app->make(IResolver::class), $gateways);
         });
     }
 

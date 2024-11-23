@@ -8,22 +8,16 @@ use App\Modules\Payment\Exceptions\PaymentApplicationException;
 
 class PaymentRegistry
 {
-    protected array $gateways = [];
-
-    public function __construct(private readonly IResolver $resolver)
-    {
-    }
-
     /**
      * @throws PaymentApplicationException
      */
-    public function register(PaymentMethod $method, string $class): void
+    public function __construct(
+        private readonly IResolver $resolver,
+        private array              $gateways)
     {
-        if (!class_exists($class) || !is_subclass_of($class, IPaymentMethod::class)) {
-            throw PaymentApplicationException::invalidPaymentMethod();
+        foreach ($this->gateways as $gateway) {
+            $this->register($gateway->getMethod(), $gateway->getClass());
         }
-
-        $this->gateways[$method->value] = $class;
     }
 
     /**
@@ -36,5 +30,10 @@ class PaymentRegistry
         }
 
         return $this->resolver->resolve($this->gateways[$method->value]);
+    }
+
+    private function register(PaymentMethod $method, PaymentGatewayClass $class): void
+    {
+        $this->gateways[$method->value] = $class->toPrimitiveType();
     }
 }
