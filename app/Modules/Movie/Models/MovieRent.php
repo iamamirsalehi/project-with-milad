@@ -20,6 +20,7 @@ use Illuminate\Support\Carbon;
  * @property-read MovieID $movie_id
  * @property-read Duration $duration
  * @property-read ExpiresAt $expires_at
+ * @property-read bool $is_active
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  * */
@@ -35,6 +36,7 @@ class MovieRent extends Model
             'movie_id' => MovieIDCast::class,
             'duration' => DurationCast::class,
             'expires_at' => ExpiresAtCast::class,
+            'is_active' => 'boolean',
         ];
     }
 
@@ -49,6 +51,7 @@ class MovieRent extends Model
         $movieRent->movie_id = $movieId;
         $movieRent->user_id = $userID;
         $movieRent->duration = $duration;
+        $movieRent->is_active = false;
 
         return $movieRent;
     }
@@ -73,6 +76,18 @@ class MovieRent extends Model
     public function isWatchingStarted(): bool
     {
         return false === is_null($this->expires_at);
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
+    public function activate(): void
+    {
+        if ($this->is_active) {
+            throw MovieApplicationException::movieRentIsAlreadyActivated();
+        }
+
+        $this->is_active = true;
     }
 
     public function payment(): MorphOne

@@ -37,6 +37,8 @@ readonly class UserSubscriptionService
 
         $userSubscription = $subscription->subscribe($userID, $expiresAt);
 
+        $userSubscription->activate();
+
         $this->userSubscriptionRepository->save($userSubscription);
     }
 

@@ -11,6 +11,7 @@ readonly class NewMovieRent
     public function __construct(
         private MovieID  $movieID,
         private UserID   $userID,
+        private Duration $duration,
     )
     {
     }
@@ -23,5 +24,10 @@ readonly class NewMovieRent
     public function getUserID(): UserID
     {
         return $this->userID;
+    }
+
+    public function getDuration(): Duration
+    {
+        return $this->duration;
     }
 }

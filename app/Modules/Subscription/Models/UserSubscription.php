@@ -56,7 +56,7 @@ class UserSubscription extends Model
     /**
      * @throws SubscriptionApplicationExceptions
      */
-    public function active(): void
+    public function activate(): void
     {
         if ($this->status == UserSubscriptionStatus::Active) {
             throw SubscriptionApplicationExceptions::userSubscriptionIsAlreadyActive();

@@ -10,7 +10,7 @@ class PaymentRegistry
 {
     protected array $gateways = [];
 
-    public function __construct(private IResolver $resolver)
+    public function __construct(private readonly IResolver $resolver)
     {
     }
 

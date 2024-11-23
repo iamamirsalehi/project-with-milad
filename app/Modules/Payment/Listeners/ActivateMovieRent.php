@@ -2,12 +2,10 @@
 
 namespace App\Modules\Payment\Listeners;
 
-use App\Contracts\Repositories\Eloquent\MovieRentRepository;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 use App\Modules\Movie\Models\MovieID;
 use App\Modules\Movie\Models\MovieRent;
 use App\Modules\Movie\Services\MovieRentService\MovieRentService;
-use App\Modules\Movie\Services\MovieService\NewMovieRent;
 use App\Modules\Payment\Events\PaidEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -30,11 +28,6 @@ readonly class ActivateMovieRent implements ShouldQueue
             return;
         }
 
-        $newMovieRent = new NewMovieRent(
-            new MovieID($payment->paymentable_id->toPrimitiveType()),
-            $payment->user_id,
-        );
-
-        $this->movieRentService->rent($newMovieRent);
+        $this->movieRentService->activate($payment->user_id, new MovieID($payment->paymentable_id->toPrimitiveType()));
     }
 }

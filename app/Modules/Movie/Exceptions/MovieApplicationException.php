@@ -38,7 +38,7 @@ class MovieApplicationException extends BusinessException
     private const INVALID_MOVIE_GENRE_NAME = 'invalid movie genre name';
     private const INVALID_GENRE_ID = 'invalid genre id';
     private const MOVIE_RENT_DOES_NOT_EXIST = 'movie rent does not exist';
-    private const MOVIE_RENT_IS_ALREADY_PAID = 'movie rent is already paid';
+    private const MOVIE_RENT_IS_ALREADY_ACTIVATED = 'movie rent is already activated';
     private const MOVIE_RENT_IS_ALREADY_STARTED_TO_WATCHING = 'movie rent is already started to watching';
     private const MOVIE_IS_NOT_ACCESSIBLE = 'movie is not accessible';
 
@@ -202,9 +202,9 @@ class MovieApplicationException extends BusinessException
         return new self(self::MOVIE_RENT_DOES_NOT_EXIST);
     }
 
-    public static function movieRentIsAlreadyPaid(): self
+    public static function movieRentIsAlreadyActivated(): self
     {
-        return new self(self::MOVIE_RENT_IS_ALREADY_PAID);
+        return new self(self::MOVIE_RENT_IS_ALREADY_ACTIVATED);
     }
 
     public static function movieRentIsAlreadyStartedToWatching(): self

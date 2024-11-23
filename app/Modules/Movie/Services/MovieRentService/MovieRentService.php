@@ -5,8 +5,10 @@ namespace App\Modules\Movie\Services\MovieRentService;
 use App\Contracts\Repositories\IMovieRentRepository;
 use App\Contracts\Repositories\IMovieRepository;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Movie\Models\MovieID;
 use App\Modules\Movie\Models\MovieRent;
 use App\Modules\Movie\Services\MovieService\NewMovieRent;
+use App\Modules\User\Models\UserID;
 
 readonly class MovieRentService
 {
@@ -21,7 +23,7 @@ readonly class MovieRentService
     /**
      * @throws MovieApplicationException
      */
-    public function rent(NewMovieRent $data): void
+    public function add(NewMovieRent $data): void
     {
         $movie = $this->movieRepository->findByID($data->getMovieID());
         if (is_null($movie)) {
@@ -37,10 +39,23 @@ readonly class MovieRentService
             throw MovieApplicationException::canNotHaveMoreThanTwoRentedMovie();
         }
 
-        $calculatedDuration = $this->movieRentPriceCalculation->calculate($data->getDuration());
-
-        $rentedMovie = MovieRent::new($movie->id, $data->getUserID(), $calculatedDuration);
+        $rentedMovie = MovieRent::new($movie->id, $data->getUserID(), $data->getDuration());
 
         $this->movieRentRepository->save($rentedMovie);
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
+    public function activate(UserID $userID, MovieID $movieID): void
+    {
+        $movieRent = $this->movieRentRepository->findLatestByUserIDAndMovieID($userID, $movieID);
+        if (is_null($movieRent)) {
+            throw MovieApplicationException::movieRentDoesNotExist();
+        }
+
+        $movieRent->activate();
+
+        $this->movieRentRepository->save($movieRent);
     }
 }
