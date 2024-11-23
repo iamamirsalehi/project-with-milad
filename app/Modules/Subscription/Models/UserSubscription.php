@@ -2,6 +2,7 @@
 
 namespace App\Modules\Subscription\Models;
 
+use App\Modules\Movie\Exceptions\MovieApplicationException;
 use App\Modules\Subscription\Enums\UserSubscriptionStatus;
 use App\Modules\Subscription\Exceptions\SubscriptionApplicationExceptions;
 use App\Modules\Subscription\Models\Casts\ExpiresAtCast;
@@ -63,5 +64,15 @@ class UserSubscription extends Model
         }
 
         $this->status = UserSubscriptionStatus::Active;
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
+    public function watch(): void
+    {
+        if(!$this->isActive()){
+            throw MovieApplicationException::movieIsNotAccessible();
+        }
     }
 }

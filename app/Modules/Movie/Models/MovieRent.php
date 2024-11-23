@@ -64,6 +64,26 @@ class MovieRent extends Model
     /**
      * @throws MovieApplicationException
      */
+    public function watch(): void
+    {
+        if (!$this->isActive()) {
+            throw MovieApplicationException::movieIsNotAccessible();
+        }
+
+        if ($this->isExpired()) {
+            throw MovieApplicationException::movieIsNotAccessible();
+        }
+
+        if ($this->isWatchingStarted()) {
+            return;
+        }
+
+        $this->startWatching();
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
     public function startWatching(): void
     {
         if ($this->isWatchingStarted()) {
@@ -88,6 +108,11 @@ class MovieRent extends Model
         }
 
         $this->is_active = true;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->is_active;
     }
 
     public function payment(): MorphOne

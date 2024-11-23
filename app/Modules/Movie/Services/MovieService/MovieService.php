@@ -137,26 +137,19 @@ readonly class MovieService
         }
 
         $userSubscription = $this->userSubscriptionRepository->findLatestByUserID($userID);
+
         $movieRent = $this->movieRentRepository->findLatestByUserIDAndMovieID($userID, $movie->id);
 
-        if (is_null($movieRent) && is_null($userSubscription)) {
-            throw MovieApplicationException::movieIsNotAccessible();
+        if (!is_null($userSubscription)) {
+            $userSubscription->watch();
         }
 
-        if (false === is_null($userSubscription) && false === $userSubscription->isActive()) {
-            throw MovieApplicationException::movieIsNotAccessible();
+        if (!is_null($movieRent)) {
+            $movieRent->watch();
+
+            $this->movieRentRepository->save($movieRent);
         }
 
-        if (false === is_null($movieRent) && true === $movieRent->isExpired()) {
-            throw MovieApplicationException::movieIsNotAccessible();
-        }
-
-        if (false === is_null($movieRent) && false === $movieRent->isExpired()) {
-            if (false === $movieRent->isWatchingStarted()) {
-                $movieRent->startWatching();
-
-                $this->movieRentRepository->save($movieRent);
-            }
-        }
+        throw MovieApplicationException::movieIsNotAccessible();
     }
 }
