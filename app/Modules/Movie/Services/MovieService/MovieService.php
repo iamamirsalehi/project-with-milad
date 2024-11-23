@@ -142,12 +142,14 @@ readonly class MovieService
 
         if (!is_null($userSubscription)) {
             $userSubscription->watch();
+            return;
         }
 
         if (!is_null($movieRent)) {
             $movieRent->watch();
 
             $this->movieRentRepository->save($movieRent);
+            return;
         }
 
         throw MovieApplicationException::movieIsNotAccessible();
