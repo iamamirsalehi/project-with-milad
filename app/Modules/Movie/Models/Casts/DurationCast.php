@@ -7,7 +7,7 @@ use App\Modules\Movie\Models\Duration;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class DurationCast implements CastsAttributes
+final class DurationCast implements CastsAttributes
 {
     /**
      * @throws MovieApplicationException

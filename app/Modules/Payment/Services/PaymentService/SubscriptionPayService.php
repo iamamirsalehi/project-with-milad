@@ -9,7 +9,7 @@ use App\Modules\Payment\Models\PaymentableID;
 use App\Modules\Payment\Models\PaymentableType;
 use App\Modules\Subscription\Exceptions\SubscriptionApplicationExceptions;
 
-readonly class SubscriptionPayService
+final readonly class SubscriptionPayService
 {
     public function __construct(
         private ISubscriptionRepository $subscriptionRepository,
@@ -22,17 +22,17 @@ readonly class SubscriptionPayService
      * @throws SubscriptionApplicationExceptions
      * @throws PaymentApplicationException
      */
-    public function pay(NewSubscriptionPayment $data): void
+    public function pay(NewSubscriptionPayment $newSubscriptionPayment): void
     {
-        $subscription = $this->subscriptionRepository->findByID($data->getSubscriptionID());
+        $subscription = $this->subscriptionRepository->findByID($newSubscriptionPayment->getSubscriptionID());
         if (is_null($subscription)) {
             throw SubscriptionApplicationExceptions::invalidSubscriptionID();
         }
 
         $newPayment = new NewPayment(
-            $data->getUserID(),
+            $newSubscriptionPayment->getUserID(),
             new Amount($subscription->price->toPrimitiveType()),
-            $data->getPaymentMethod(),
+            $newSubscriptionPayment->getPaymentMethod(),
             new PaymentableType($subscription),
             new PaymentableID($subscription->id->toPrimitiveType()),
         );

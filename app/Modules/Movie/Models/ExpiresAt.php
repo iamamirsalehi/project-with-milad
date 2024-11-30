@@ -5,7 +5,7 @@ namespace App\Modules\Movie\Models;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 use Illuminate\Support\Carbon;
 
-readonly class ExpiresAt
+final readonly class ExpiresAt
 {
     /**
      * @throws MovieApplicationException

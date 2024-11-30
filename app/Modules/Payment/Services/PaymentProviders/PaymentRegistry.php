@@ -3,10 +3,9 @@
 namespace App\Modules\Payment\Services\PaymentProviders;
 
 use App\Contracts\Resolver\IResolver;
-use App\Modules\Payment\Enums\PaymentMethod;
 use App\Modules\Payment\Exceptions\PaymentApplicationException;
 
-class PaymentRegistry
+final class PaymentRegistry
 {
     /**
      * @throws PaymentApplicationException
@@ -16,24 +15,24 @@ class PaymentRegistry
         private array              $gateways)
     {
         foreach ($this->gateways as $gateway) {
-            $this->register($gateway->getMethod(), $gateway->getClass());
+            $this->register($gateway->getMethod());
         }
     }
 
     /**
      * @throws PaymentApplicationException
      */
-    public function resolve(PaymentMethod $method): IPaymentMethod
+    public function resolve(string $name): IPaymentMethod
     {
-        if (!isset($this->gateways[$method->value])) {
+        if (!isset($this->gateways[$name])) {
             throw PaymentApplicationException::invalidPaymentMethod();
         }
 
-        return $this->resolver->resolve($this->gateways[$method->value]);
+        return $this->resolver->resolve($this->gateways[$name]);
     }
 
-    private function register(PaymentMethod $method, PaymentGatewayClass $class): void
+    private function register(IPaymentMethod $paymentMethod): void
     {
-        $this->gateways[$method->value] = $class->toPrimitiveType();
+        $this->gateways[$paymentMethod->getName()] = $paymentMethod;
     }
 }

@@ -13,7 +13,7 @@ use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-readonly class AdminMovieController
+final readonly class AdminMovieController
 {
     public function __construct(
         private MovieService         $movieService,

@@ -23,7 +23,7 @@ use Illuminate\Support\Carbon;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  * */
-class Payment extends Model
+final class Payment extends Model
 {
     protected $guarded = [];
 
@@ -42,7 +42,7 @@ class Payment extends Model
         Amount          $amount,
         PaymentableType $paymentableType,
         PaymentableID   $paymentableID,
-        PaymentMethod   $method
+        string $method
     ): self
     {
         $payment = new self();

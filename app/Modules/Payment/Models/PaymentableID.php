@@ -4,7 +4,7 @@ namespace App\Modules\Payment\Models;
 
 use App\Modules\Payment\Exceptions\PaymentApplicationException;
 
-readonly class PaymentableID
+final readonly class PaymentableID
 {
     /**
      * @throws PaymentApplicationException

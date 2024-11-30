@@ -3,14 +3,17 @@
 namespace App\Modules\Movie\Services\MovieSearchService;
 
 use App\Modules\Movie\Models\Country;
+use App\Modules\Movie\Models\GenreName;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Models\IMDBRating;
 use App\Modules\Movie\Models\IMDBVote;
 use App\Modules\Movie\Models\Language;
 use App\Modules\Movie\Models\Poster;
 
-readonly class MovieInfo
+final readonly class MovieInfo
 {
+    private array $genres;
+
     public function __construct(
         private string     $title,
         private Language   $language,
@@ -19,9 +22,12 @@ readonly class MovieInfo
         private IMDBRating $imdbRating,
         private IMDBID     $imdbID,
         private IMDBVote   $imdbVotes,
-        private array      $genres,
+        array              $genresName,
     )
     {
+        foreach ($genresName as $genreName) {
+            $this->addGenre($genreName);
+        }
     }
 
     public function getTitle(): string
@@ -62,5 +68,10 @@ readonly class MovieInfo
     public function getGenres(): array
     {
         return $this->genres;
+    }
+
+    private function addGenre(GenreName $genreName): void
+    {
+        $this->genres[] = $genreName;
     }
 }

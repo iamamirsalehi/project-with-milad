@@ -7,7 +7,7 @@ use App\Modules\Movie\Models\IMDBVote;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class IMDBVoteCast implements CastsAttributes
+final class IMDBVoteCast implements CastsAttributes
 {
     /**
      * @throws MovieApplicationException

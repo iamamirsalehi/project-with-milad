@@ -20,7 +20,7 @@ use App\Modules\Subscription\Models\SubscriptionID;
 use App\Modules\User\Models\UserID;
 use Illuminate\Http\Response;
 
-readonly class UserPaymentController
+final readonly class UserPaymentController
 {
     public function __construct(
         private SubscriptionPayService  $subscriptionPayService,
@@ -42,7 +42,7 @@ readonly class UserPaymentController
                 new UserID($userID),
                 new IMDBID($imdbID),
                 new Duration($hours),
-                PaymentMethod::from($paymentMethod),
+                $paymentMethod,
             );
 
             $this->movieRentPaymentService->pay($newMovieRentPayment);
@@ -63,7 +63,7 @@ readonly class UserPaymentController
             $newSubscriptionPay = new NewSubscriptionPayment(
                 new UserID($userID),
                 new SubscriptionID($subscriptionID),
-                PaymentMethod::from($paymentMethod),
+                $paymentMethod,
             );
 
             $this->subscriptionPayService->pay($newSubscriptionPay);

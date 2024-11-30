@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @property-read Carbon $created_at
  * @property-read Carbon $updated_at
  * */
-class MovieRent extends Model
+final class MovieRent extends Model
 {
     protected $guarded = [];
 

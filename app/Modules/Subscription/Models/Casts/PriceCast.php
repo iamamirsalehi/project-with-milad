@@ -7,7 +7,7 @@ use App\Modules\Subscription\Models\Price;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class PriceCast implements CastsAttributes
+final class PriceCast implements CastsAttributes
 {
     /**
      * @throws MovieApplicationException

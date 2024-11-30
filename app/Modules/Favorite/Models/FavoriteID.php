@@ -4,7 +4,7 @@ namespace App\Modules\Favorite\Models;
 
 use App\Modules\Favorite\Exceptions\FavoriteApplicationException;
 
-readonly class FavoriteID
+final readonly class FavoriteID
 {
     /**
      * @throws FavoriteApplicationException

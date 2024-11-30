@@ -10,11 +10,10 @@ use App\Modules\Movie\Models\IMDBRating;
 use App\Modules\Movie\Models\IMDBVote;
 use App\Modules\Movie\Models\Language;
 use App\Modules\Movie\Models\Poster;
-use App\Modules\Movie\Utilities\GenreStringToObjectConvertor;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
-class OMDBMovieSearchService implements IMovieSearchService
+final class OMDBMovieSearchService implements IMovieSearchService
 {
     private string $baseURL;
 
@@ -55,12 +54,32 @@ class OMDBMovieSearchService implements IMovieSearchService
             new IMDBRating(floatval($parsedBody['imdbRating'])),
             new IMDBID($parsedBody['imdbID']),
             new IMDBVote($this->imdbVoteToInt($parsedBody['imdbVotes'])),
-            GenreStringToObjectConvertor::convert($parsedBody['Genre']),
+            $this->convertStringGenreToGenreNameObject($parsedBody['Genre']),
         );
     }
 
     private function imdbVoteToInt(string $imdbVote): int
     {
         return intval(str_replace(',', '', $imdbVote));
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
+    private function convertStringGenreToGenreNameObject(string $genre): array
+    {
+        if (empty($genre)) {
+            return [];
+        }
+
+        $arrayOfGenres = explode(',', $genre);
+
+        $genres = [];
+        foreach ($arrayOfGenres as $genre) {
+            $genre = strtolower(trim($genre));
+            $genres[] = new GenreName($genre);
+        }
+
+        return $genres;
     }
 }

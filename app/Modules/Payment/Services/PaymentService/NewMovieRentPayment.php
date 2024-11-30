@@ -4,16 +4,15 @@ namespace App\Modules\Payment\Services\PaymentService;
 
 use App\Modules\Movie\Models\Duration;
 use App\Modules\Movie\Models\IMDBID;
-use App\Modules\Payment\Enums\PaymentMethod;
 use App\Modules\User\Models\UserID;
 
-readonly class NewMovieRentPayment
+final readonly class NewMovieRentPayment
 {
     public function __construct(
         private UserID $userID,
         private IMDBID $IMDBID,
         private Duration $duration,
-        private PaymentMethod $paymentMethod,
+        private string $paymentMethod,
     )
     {
     }
@@ -33,7 +32,7 @@ readonly class NewMovieRentPayment
         return $this->IMDBID;
     }
 
-    public function getPaymentMethod(): PaymentMethod
+    public function getPaymentMethod(): string
     {
         return $this->paymentMethod;
     }

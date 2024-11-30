@@ -6,7 +6,7 @@ use App\Contracts\Repositories\IMovieRepository;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 use App\Modules\Movie\Models\IMDBID;
 
-readonly class VideoUploaderService
+final readonly class VideoUploaderService
 {
     public function __construct(
         private IMovieRepository $movieRepository,

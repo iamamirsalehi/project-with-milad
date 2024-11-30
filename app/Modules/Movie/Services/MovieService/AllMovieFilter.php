@@ -4,7 +4,7 @@ namespace App\Modules\Movie\Services\MovieService;
 
 use App\Modules\Movie\Models\GenreName;
 
-class AllMovieFilter
+final class AllMovieFilter
 {
     private ?GenreName $genreName = null;
 

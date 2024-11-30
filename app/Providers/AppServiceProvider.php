@@ -4,33 +4,24 @@ namespace App\Providers;
 
 use App\Contracts\MessageBus\IMessageBus;
 use App\Contracts\MessageBus\RedisMessageBus;
-use App\Contracts\Repositories\Eloquent\GenreRepository;
-use App\Contracts\Repositories\Eloquent\MovieGenreRepository;
-use App\Contracts\Repositories\Eloquent\MovieRentRepository;
 use App\Contracts\Repositories\Eloquent\MovieRepository;
-use App\Contracts\Repositories\Eloquent\SubscriptionRepository;
-use App\Contracts\Repositories\Eloquent\UserSubscriptionRepository;
+use App\Contracts\Repositories\IGenreRepository;
+use App\Contracts\Repositories\IMovieGenreRepository;
+use App\Contracts\Repositories\IMovieRentRepository;
+use App\Contracts\Repositories\IMovieRepository;
+use App\Contracts\Repositories\IUserSubscriptionRepository;
 use App\Contracts\Resolver\IResolver;
 use App\Contracts\Resolver\LaravelResolver;
-use App\Modules\Movie\Models\Genre;
 use App\Modules\Movie\Models\Movie;
-use App\Modules\Movie\Models\MovieGenre;
-use App\Modules\Movie\Models\MovieRent;
-use App\Modules\Movie\Services\MovieGenreService\MovieGenreService;
 use App\Modules\Movie\Services\MovieSearchService\OMDBMovieSearchService;
 use App\Modules\Movie\Services\MovieService\MovieService;
 use App\Modules\Movie\Services\VideoUploader\IVideoUploader;
 use App\Modules\Movie\Services\VideoUploader\LocalStorageUploader;
 use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
-use App\Modules\Payment\Enums\PaymentMethod;
-use App\Modules\Payment\Services\PaymentProviders\PaymentGatewayClass;
 use App\Modules\Payment\Services\PaymentProviders\IPaymentMethod;
-use App\Modules\Payment\Services\PaymentProviders\NewPaymentGateway;
 use App\Modules\Payment\Services\PaymentProviders\PaymentMethods\MellatPayment;
 use App\Modules\Payment\Services\PaymentProviders\PaymentMethods\SamanPayment;
 use App\Modules\Payment\Services\PaymentProviders\PaymentRegistry;
-use App\Modules\Subscription\Models\Subscription;
-use App\Modules\Subscription\Models\UserSubscription;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -45,27 +36,19 @@ class AppServiceProvider extends ServiceProvider
 
             $omdbDataProvider = new OMDBMovieSearchService($apiKey);
 
-            $movieRepository = new MovieRepository(new Movie());
-
-            $genreRepository = new GenreRepository(new Genre());
-
-            $movieGenreRepository = new MovieGenreRepository(new MovieGenre());;
-
-            $movieGenreService = new MovieGenreService($movieRepository, $genreRepository, $movieGenreRepository);
-
-            $userSubscriptionRepository = new UserSubscriptionRepository(new UserSubscription());
-
-            $movieRentRepository = new MovieRentRepository(new MovieRent());
-
-            $genreRepository = new GenreRepository(new Genre());
+            $movieRepository = $app->make(IMovieRepository::class);
+            $movieGenreRepository = $app->make(IMovieGenreRepository::class);;
+            $userSubscriptionRepository = $app->make(IUserSubscriptionRepository::class);
+            $movieRentRepository = $app->make(IMovieRentRepository::class);
+            $genreRepository = $app->make(IGenreRepository::class);
 
             return new MovieService(
                 $omdbDataProvider,
                 $movieRepository,
-                $movieGenreService,
                 $userSubscriptionRepository,
                 $movieRentRepository,
-                $genreRepository
+                $genreRepository,
+                $movieGenreRepository
             );
         });
 
@@ -81,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(IMessageBus::class, RedisMessageBus::class);
+
         $this->app->bind(IVideoUploader::class, LocalStorageUploader::class);
 
         $this->app->singleton(IResolver::class, function ($app) {
@@ -89,8 +73,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(PaymentRegistry::class, function ($app) {
             $gateways = [
-                new NewPaymentGateway(PaymentMethod::Saman, new PaymentGatewayClass(SamanPayment::class)),
-                new NewPaymentGateway(PaymentMethod::Mellat, new PaymentGatewayClass(MellatPayment::class))
+                SamanPayment::class,
+                MellatPayment::class,
             ];
 
             return new PaymentRegistry($app->make(IResolver::class), $gateways);

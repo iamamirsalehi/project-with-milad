@@ -7,7 +7,7 @@ use App\Modules\Subscription\Models\ExpiresAt;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class ExpiresAtCast implements CastsAttributes
+final class ExpiresAtCast implements CastsAttributes
 {
     /**
      * @throws SubscriptionApplicationExceptions

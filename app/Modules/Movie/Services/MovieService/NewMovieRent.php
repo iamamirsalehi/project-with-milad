@@ -6,7 +6,7 @@ use App\Modules\Movie\Models\Duration;
 use App\Modules\Movie\Models\MovieID;
 use App\Modules\User\Models\UserID;
 
-readonly class NewMovieRent
+final readonly class NewMovieRent
 {
     public function __construct(
         private MovieID  $movieID,

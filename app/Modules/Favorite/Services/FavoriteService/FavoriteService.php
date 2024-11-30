@@ -11,7 +11,7 @@ use App\Modules\Movie\Models\IMDBID;
 use App\Modules\User\Models\UserID;
 use Illuminate\Database\Eloquent\Collection;
 
-readonly class FavoriteService
+final readonly class FavoriteService
 {
     public function __construct(
         private IMovieRepository    $movieRepository,
@@ -50,10 +50,10 @@ readonly class FavoriteService
     /**
      * @throws MovieApplicationException
      */
-    public function userMovies(UserID $userID): Collection
+    public function getUserMovies(UserID $userID): Collection
     {
         $userFavoriteList = $this->favoriteRepository->getAllByUserID($userID);
-        if (empty($userFavoriteList->isEmpty())) {
+        if ($userFavoriteList->isEmpty()) {
             throw MovieApplicationException::userDoesNotHaveAnyFavoritesMovie();
         }
 

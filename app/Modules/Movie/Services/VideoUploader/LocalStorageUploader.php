@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
-class LocalStorageUploader implements IVideoUploader
+final class LocalStorageUploader implements IVideoUploader
 {
     public function upload(IMDBID $imdbID, string $videoTempPath, string $extension): string
     {

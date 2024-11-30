@@ -13,7 +13,7 @@ use App\Modules\Movie\Models\IMDBID;
 use App\Modules\User\Models\UserID;
 use Illuminate\Http\Response;
 
-readonly class UserFavoriteMovieController
+final readonly class UserFavoriteMovieController
 {
     public function __construct(private FavoriteService $favoriteService)
     {
@@ -37,7 +37,7 @@ readonly class UserFavoriteMovieController
     {
         $userID = $request->get('user_id');
         try {
-            $movies = $this->favoriteService->userMovies(new UserID($userID));
+            $movies = $this->favoriteService->getUserMovies(new UserID($userID));
         } catch (BusinessException $exception) {
             return JsonResponse::unprocessableEntity($exception->getMessage());
         }

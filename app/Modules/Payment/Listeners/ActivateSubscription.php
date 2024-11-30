@@ -9,7 +9,7 @@ use App\Modules\Subscription\Models\SubscriptionID;
 use App\Modules\Subscription\Services\UserSubscriptionService\UserSubscriptionService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-readonly class ActivateSubscription implements ShouldQueue
+final readonly class ActivateSubscription implements ShouldQueue
 {
     public function __construct(
         private UserSubscriptionService $userSubscriptionService

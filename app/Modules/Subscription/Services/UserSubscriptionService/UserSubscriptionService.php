@@ -10,7 +10,7 @@ use App\Modules\Subscription\Models\SubscriptionID;
 use App\Modules\User\Models\UserID;
 use Illuminate\Support\Carbon;
 
-readonly class UserSubscriptionService
+final readonly class UserSubscriptionService
 {
     public function __construct(
         private IUserSubscriptionRepository $userSubscriptionRepository,

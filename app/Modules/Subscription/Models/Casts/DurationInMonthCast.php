@@ -7,7 +7,7 @@ use App\Modules\Subscription\Models\DurationInMonth;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class DurationInMonthCast implements CastsAttributes
+final class DurationInMonthCast implements CastsAttributes
 {
     /**
      * @throws MovieApplicationException

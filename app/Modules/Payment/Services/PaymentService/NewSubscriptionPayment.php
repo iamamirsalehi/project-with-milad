@@ -2,16 +2,15 @@
 
 namespace App\Modules\Payment\Services\PaymentService;
 
-use App\Modules\Payment\Enums\PaymentMethod;
 use App\Modules\Subscription\Models\SubscriptionID;
 use App\Modules\User\Models\UserID;
 
-readonly class NewSubscriptionPayment
+final readonly class NewSubscriptionPayment
 {
     public function __construct(
         private UserID $userID,
         private SubscriptionID $subscriptionID,
-        private PaymentMethod $paymentMethod,
+        private string $paymentMethod,
     )
     {
     }
@@ -26,7 +25,7 @@ readonly class NewSubscriptionPayment
         return $this->subscriptionID;
     }
 
-    public function getPaymentMethod(): PaymentMethod
+    public function getPaymentMethod(): string
     {
         return $this->paymentMethod;
     }

@@ -11,7 +11,7 @@ use App\Modules\Subscription\Services\SubscriptionService\NewSubscription;
 use App\Modules\Subscription\Services\SubscriptionService\SubscriptionService;
 use Illuminate\Http\Response;
 
-readonly class AdminSubscriptionController
+final readonly class AdminSubscriptionController
 {
     public function __construct(private SubscriptionService $subscriptionService)
     {

@@ -2,7 +2,7 @@
 
 namespace App\Modules\Movie\Models;
 
-readonly class Language
+final readonly class Language
 {
     public function __construct(private string $language)
     {

@@ -2,7 +2,7 @@
 
 namespace App\Modules\Movie\Models;
 
-readonly class Country
+final readonly class Country
 {
     public function __construct(private string $country)
     {

@@ -5,7 +5,7 @@ namespace App\Modules\Subscription\Models;
 use App\Modules\Subscription\Exceptions\SubscriptionApplicationExceptions;
 use Illuminate\Support\Carbon;
 
-readonly class ExpiresAt
+final readonly class ExpiresAt
 {
     /**
      * @throws SubscriptionApplicationExceptions

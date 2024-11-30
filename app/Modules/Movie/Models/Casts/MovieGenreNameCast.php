@@ -7,7 +7,7 @@ use App\Modules\Movie\Models\GenreName;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class MovieGenreNameCast implements CastsAttributes
+final class MovieGenreNameCast implements CastsAttributes
 {
     /**
      * @throws MovieApplicationException

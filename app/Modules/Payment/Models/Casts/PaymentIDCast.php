@@ -7,7 +7,7 @@ use App\Modules\Payment\Models\PaymentID;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentIDCast implements CastsAttributes
+final class PaymentIDCast implements CastsAttributes
 {
     /**
      * @throws PaymentApplicationException

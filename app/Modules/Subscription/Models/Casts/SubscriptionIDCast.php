@@ -7,7 +7,7 @@ use App\Modules\Subscription\Models\SubscriptionID;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class SubscriptionIDCast implements CastsAttributes
+final class SubscriptionIDCast implements CastsAttributes
 {
     /**
      * @throws SubscriptionApplicationExceptions

@@ -7,7 +7,7 @@ use App\Modules\Payment\Exceptions\PaymentApplicationException;
 use App\Modules\Subscription\Models\Subscription;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentableType
+final class PaymentableType
 {
     /**
      * @throws PaymentApplicationException

@@ -4,7 +4,7 @@ namespace App\Modules\Subscription\Models;
 
 use App\Modules\Subscription\Exceptions\SubscriptionApplicationExceptions;
 
-readonly class SubscriptionID
+final readonly class SubscriptionID
 {
     /**
      * @throws SubscriptionApplicationExceptions

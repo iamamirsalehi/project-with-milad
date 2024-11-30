@@ -20,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * */
-class FavoriteMovie extends Model
+final class FavoriteMovie extends Model
 {
     protected $guarded = [];
 

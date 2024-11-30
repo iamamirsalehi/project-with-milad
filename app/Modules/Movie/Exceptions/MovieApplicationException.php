@@ -4,7 +4,7 @@ namespace App\Modules\Movie\Exceptions;
 
 use App\Contracts\Exceptions\BusinessException;
 
-class MovieApplicationException extends BusinessException
+final class MovieApplicationException extends BusinessException
 {
     private const COULD_NOT_FIND_MOVIE = 'could not find movie';
     private const COULD_NOT_UPLOAD_VIDEO = 'could not upload video';

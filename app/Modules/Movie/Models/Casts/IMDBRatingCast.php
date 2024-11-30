@@ -7,7 +7,7 @@ use App\Modules\Movie\Models\IMDBRating;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class IMDBRatingCast implements CastsAttributes
+final class IMDBRatingCast implements CastsAttributes
 {
     /**
      * @throws MovieApplicationException

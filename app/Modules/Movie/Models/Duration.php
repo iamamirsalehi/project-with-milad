@@ -4,7 +4,7 @@ namespace App\Modules\Movie\Models;
 
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 
-readonly class Duration
+final readonly class Duration
 {
     private const DAY_IN_HOURS = 24;
 

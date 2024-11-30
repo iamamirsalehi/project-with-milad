@@ -4,7 +4,7 @@ namespace App\Modules\Payment\Exceptions;
 
 use App\Contracts\Exceptions\BusinessException;
 
-class PaymentApplicationException extends BusinessException
+final class PaymentApplicationException extends BusinessException
 {
     private const INVALID_PAYMENT_ID = 'invalid payment id';
     private const INVALID_PAYMENT_AMOUNT = 'invalid payment amount';

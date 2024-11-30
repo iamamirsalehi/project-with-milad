@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property      Carbon $created_at
  * @property      Carbon $updated_at
  * */
-class Subscription extends Model
+final class Subscription extends Model
 {
     protected $guarded = [];
 

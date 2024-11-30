@@ -4,7 +4,7 @@ namespace App\Modules\Favorite\Exceptions;
 
 use App\Contracts\Exceptions\BusinessException;
 
-class FavoriteApplicationException extends BusinessException
+final class FavoriteApplicationException extends BusinessException
 {
     private const INVALID_FAVORITE_ID = 'invalid favorite id';
 

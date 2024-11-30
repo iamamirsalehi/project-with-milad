@@ -6,7 +6,7 @@ use App\Modules\Movie\Models\Country;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class CountryCast implements CastsAttributes
+final class CountryCast implements CastsAttributes
 {
     public function get(Model $model, string $key, mixed $value, array $attributes): Country
     {

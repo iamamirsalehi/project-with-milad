@@ -7,7 +7,7 @@ use App\Modules\Movie\Models\Poster;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class PosterCast implements CastsAttributes
+final class PosterCast implements CastsAttributes
 {
     /**
      * @throws MovieApplicationException

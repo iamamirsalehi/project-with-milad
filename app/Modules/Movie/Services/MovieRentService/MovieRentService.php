@@ -10,7 +10,7 @@ use App\Modules\Movie\Models\MovieRent;
 use App\Modules\Movie\Services\MovieService\NewMovieRent;
 use App\Modules\User\Models\UserID;
 
-readonly class MovieRentService
+final readonly class MovieRentService
 {
     public function __construct(
         private IMovieRepository          $movieRepository,

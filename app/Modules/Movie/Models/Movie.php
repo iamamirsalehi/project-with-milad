@@ -9,10 +9,8 @@ use App\Modules\Movie\Models\Casts\IMDBIDCast;
 use App\Modules\Movie\Models\Casts\IMDBRatingCast;
 use App\Modules\Movie\Models\Casts\IMDBVoteCast;
 use App\Modules\Movie\Models\Casts\LanguageCast;
-use App\Modules\Movie\Models\Casts\MovieIDCast;
 use App\Modules\Movie\Models\Casts\PosterCast;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Carbon;
 
@@ -30,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * */
-class Movie extends Model
+final class Movie extends Model
 {
     protected $guarded = [];
 
@@ -73,7 +71,7 @@ class Movie extends Model
 
     public function isAvailable(): bool
     {
-        return !is_null($this->url) && $this->status == MovieStatus::Published;
+        return $this->isPublished();
     }
 
     public function isDraft(): bool

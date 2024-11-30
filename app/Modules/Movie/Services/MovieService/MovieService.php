@@ -3,27 +3,29 @@
 namespace App\Modules\Movie\Services\MovieService;
 
 use App\Contracts\Repositories\IGenreRepository;
+use App\Contracts\Repositories\IMovieGenreRepository;
 use App\Contracts\Repositories\IMovieRentRepository;
 use App\Contracts\Repositories\IMovieRepository;
 use App\Contracts\Repositories\IUserSubscriptionRepository;
 use App\Modules\Movie\Enums\MovieStatus;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
+use App\Modules\Movie\Models\GenreName;
 use App\Modules\Movie\Models\IMDBID;
 use App\Modules\Movie\Models\Movie;
-use App\Modules\Movie\Services\MovieGenreService\MovieGenreService;
+use App\Modules\Movie\Models\MovieGenre;
 use App\Modules\Movie\Services\MovieSearchService\IMovieSearchService;
 use App\Modules\User\Models\UserID;
 use Illuminate\Support\Collection;
 
-readonly class MovieService
+final readonly class MovieService
 {
     public function __construct(
         private IMovieSearchService         $movieSearchService,
         private IMovieRepository            $movieRepository,
-        private MovieGenreService           $movieGenreService,
         private IUserSubscriptionRepository $userSubscriptionRepository,
         private IMovieRentRepository        $movieRentRepository,
         private IGenreRepository            $genreRepository,
+        private IMovieGenreRepository       $movieGenreRepository,
     )
     {
     }
@@ -67,7 +69,7 @@ readonly class MovieService
 
         $this->movieRepository->save($movie);
 
-        $this->movieGenreService->addMany($imdbID, $searchedMovie->getGenres());
+        $this->addManyGenres($imdbID, $searchedMovie->getGenres());
     }
 
     /**
@@ -153,5 +155,30 @@ readonly class MovieService
         }
 
         throw MovieApplicationException::movieIsNotAccessible();
+    }
+
+    /**
+     * @throws MovieApplicationException
+     */
+    public function addManyGenres(IMDBID $IMDBID, array $genresName): void
+    {
+        $movie = $this->movieRepository->findByIMDBID($IMDBID);
+        if (is_null($movie)) {
+            throw MovieApplicationException::couldNotFindMovie();
+        }
+
+        $this->movieGenreRepository->removeByMovieID($movie->id);
+
+        /** @var GenreName $name */
+        foreach ($genresName as $name) {
+            $genre = $this->genreRepository->findByName($name);
+            if (is_null($genre)) {
+                throw MovieApplicationException::invalidMovieGenreName();
+            }
+
+            $movieGenre = MovieGenre::new($movie->id, $genre->id);
+
+            $this->movieGenreRepository->save($movieGenre);
+        }
     }
 }

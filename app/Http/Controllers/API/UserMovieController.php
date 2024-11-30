@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
-readonly class UserMovieController
+final readonly class UserMovieController
 {
     public function __construct(
         private MovieService     $movieService,

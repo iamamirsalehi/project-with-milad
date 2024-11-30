@@ -12,7 +12,7 @@ class PaySubscriptionRequest extends FormRequest
         return [
             'user_id' => 'required|string|exists:users,id',
             'subscription_id' => 'required|string|exists:subscriptions,id',
-            'method' => 'required|string|in:' . PaymentMethod::casesAsString() . '',
+            'method' => 'required|string',
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Modules\Subscription\Models;
 
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 
-readonly class Price
+final readonly class Price
 {
     /**
      * @throws MovieApplicationException

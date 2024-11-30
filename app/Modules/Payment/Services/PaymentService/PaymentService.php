@@ -10,7 +10,7 @@ use App\Modules\Payment\Models\PaymentID;
 use App\Modules\Payment\Services\PaymentProviders\PaymentRegistry;
 use Illuminate\Contracts\Events\Dispatcher;
 
-readonly class PaymentService
+final readonly class PaymentService
 {
     public function __construct(
         private IPaymentRepository $paymentRepository,
@@ -23,19 +23,19 @@ readonly class PaymentService
     /**
      * @throws PaymentApplicationException
      */
-    public function pay(NewPayment $data): void
+    public function pay(NewPayment $newPayment): void
     {
         $payment = Payment::new(
-            $data->getUserID(),
-            $data->getAmount(),
-            $data->getPaymentableType(),
-            $data->getPaymentableID(),
-            $data->getPaymentMethod(),
+            $newPayment->getUserID(),
+            $newPayment->getAmount(),
+            $newPayment->getPaymentableType(),
+            $newPayment->getPaymentableID(),
+            $newPayment->getPaymentMethod(),
         );
 
         $this->paymentRepository->save($payment);
 
-        $this->paymentRegistry->resolve($data->getPaymentMethod())->pay($data->getAmount());
+        $this->paymentRegistry->resolve($newPayment->getPaymentMethod())->pay($newPayment->getAmount());
     }
 
     /**

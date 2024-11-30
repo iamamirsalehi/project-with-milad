@@ -5,7 +5,7 @@ namespace App\Modules\Subscription\Services\SubscriptionService;
 use App\Modules\Subscription\Models\DurationInMonth;
 use App\Modules\Subscription\Models\Price;
 
-readonly class NewSubscription
+final readonly class NewSubscription
 {
     public function __construct(
         private string          $name,

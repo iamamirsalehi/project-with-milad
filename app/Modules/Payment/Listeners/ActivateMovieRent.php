@@ -9,7 +9,7 @@ use App\Modules\Movie\Services\MovieRentService\MovieRentService;
 use App\Modules\Payment\Events\PaidEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-readonly class ActivateMovieRent implements ShouldQueue
+final readonly class ActivateMovieRent implements ShouldQueue
 {
     public function __construct(
         private MovieRentService $movieRentService,

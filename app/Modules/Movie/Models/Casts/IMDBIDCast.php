@@ -7,7 +7,7 @@ use App\Modules\Movie\Models\IMDBID;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class IMDBIDCast implements CastsAttributes
+final class IMDBIDCast implements CastsAttributes
 {
     /**
      * @throws MovieApplicationException

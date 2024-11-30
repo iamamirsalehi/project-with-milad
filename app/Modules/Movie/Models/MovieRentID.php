@@ -4,7 +4,7 @@ namespace App\Modules\Movie\Models;
 
 use App\Modules\Movie\Exceptions\MovieApplicationException;
 
-readonly class MovieRentID
+final readonly class MovieRentID
 {
     /**
      * @throws MovieApplicationException

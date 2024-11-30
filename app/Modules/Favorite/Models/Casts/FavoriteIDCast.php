@@ -7,7 +7,7 @@ use App\Modules\Favorite\Models\FavoriteID;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class FavoriteIDCast implements CastsAttributes
+final class FavoriteIDCast implements CastsAttributes
 {
     /**
      * @throws FavoriteApplicationException

@@ -6,7 +6,7 @@ use App\Modules\Movie\Models\Language;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class LanguageCast implements CastsAttributes
+final class LanguageCast implements CastsAttributes
 {
     public function get(Model $model, string $key, mixed $value, array $attributes): Language
     {

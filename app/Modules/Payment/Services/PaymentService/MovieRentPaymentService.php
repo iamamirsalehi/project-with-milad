@@ -12,7 +12,7 @@ use App\Modules\Payment\Models\Amount;
 use App\Modules\Payment\Models\PaymentableID;
 use App\Modules\Payment\Models\PaymentableType;
 
-readonly class MovieRentPaymentService
+final readonly class MovieRentPaymentService
 {
     public function __construct(
         private IMovieRepository          $movieRepository,
@@ -27,27 +27,27 @@ readonly class MovieRentPaymentService
      * @throws MovieApplicationException
      * @throws PaymentApplicationException
      */
-    public function pay(NewMovieRentPayment $data): void
+    public function pay(NewMovieRentPayment $newMovieRentPayment): void
     {
-        $movie = $this->movieRepository->findByIMDBID($data->getIMDBID());
+        $movie = $this->movieRepository->findByIMDBID($newMovieRentPayment->getIMDBID());
         if (is_null($movie)) {
             throw MovieApplicationException::couldNotFindMovie();
         }
 
         $newMovieRent = new NewMovieRent(
             $movie->id,
-            $data->getUserID(),
-            $data->getDuration(),
+            $newMovieRentPayment->getUserID(),
+            $newMovieRentPayment->getDuration(),
         );
 
         $this->movieRentService->add($newMovieRent);
 
-        $calculatedPrice = $this->movieRentPriceCalculation->calculate($data->getDuration());
+        $calculatedPrice = $this->movieRentPriceCalculation->calculate($newMovieRentPayment->getDuration());
 
         $newPayment = new NewPayment(
-            $data->getUserID(),
+            $newMovieRentPayment->getUserID(),
             new Amount($calculatedPrice->toPrimitiveType()),
-            $data->getPaymentMethod(),
+            $newMovieRentPayment->getPaymentMethod(),
             new PaymentableType($movie),
             new PaymentableID($movie->id->toPrimitiveType()),
         );
