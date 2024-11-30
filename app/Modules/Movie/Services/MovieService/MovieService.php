@@ -6,6 +6,7 @@ use App\Contracts\Repositories\IGenreRepository;
 use App\Contracts\Repositories\IMovieGenreRepository;
 use App\Contracts\Repositories\IMovieRentRepository;
 use App\Contracts\Repositories\IMovieRepository;
+use App\Contracts\Repositories\ITransaction;
 use App\Contracts\Repositories\IUserSubscriptionRepository;
 use App\Modules\Movie\Enums\MovieStatus;
 use App\Modules\Movie\Exceptions\MovieApplicationException;
@@ -26,6 +27,7 @@ final readonly class MovieService
         private IMovieRentRepository        $movieRentRepository,
         private IGenreRepository            $genreRepository,
         private IMovieGenreRepository       $movieGenreRepository,
+        private ITransaction                $transaction,
     )
     {
     }
@@ -67,9 +69,12 @@ final readonly class MovieService
             $searchedMovie->getImdbVotes(),
         );
 
-        $this->movieRepository->save($movie);
 
-        $this->addManyGenres($imdbID, $searchedMovie->getGenres());
+        $this->transaction->begin(function () use ($movie, $searchedMovie, $imdbID) {
+            $this->movieRepository->save($movie);
+
+            $this->addManyGenres($imdbID, $searchedMovie->getGenres());
+        });
     }
 
     /**

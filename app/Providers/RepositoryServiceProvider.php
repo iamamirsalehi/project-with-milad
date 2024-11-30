@@ -8,6 +8,7 @@ use App\Contracts\Repositories\Eloquent\MovieRentRepository;
 use App\Contracts\Repositories\Eloquent\MovieRepository;
 use App\Contracts\Repositories\Eloquent\PaymentRepository;
 use App\Contracts\Repositories\Eloquent\SubscriptionRepository;
+use App\Contracts\Repositories\Eloquent\Transaction;
 use App\Contracts\Repositories\Eloquent\UserRepository;
 use App\Contracts\Repositories\Eloquent\UserSubscriptionRepository;
 use App\Contracts\Repositories\IFavoriteRepository;
@@ -16,6 +17,7 @@ use App\Contracts\Repositories\IMovieRentRepository;
 use App\Contracts\Repositories\IMovieRepository;
 use App\Contracts\Repositories\IPaymentRepository;
 use App\Contracts\Repositories\ISubscriptionRepository;
+use App\Contracts\Repositories\ITransaction;
 use App\Contracts\Repositories\IUserRepository;
 use App\Contracts\Repositories\IUserSubscriptionRepository;
 use App\Modules\Favorite\Models\FavoriteMovie;
@@ -82,6 +84,8 @@ class RepositoryServiceProvider extends ServiceProvider
 
             return new GenreRepository($genreEloquent);
         });
+
+        $this->app->bind(ITransaction::class, Transaction::class);
     }
 
     /**

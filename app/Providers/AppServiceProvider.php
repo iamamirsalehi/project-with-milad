@@ -9,6 +9,7 @@ use App\Contracts\Repositories\IGenreRepository;
 use App\Contracts\Repositories\IMovieGenreRepository;
 use App\Contracts\Repositories\IMovieRentRepository;
 use App\Contracts\Repositories\IMovieRepository;
+use App\Contracts\Repositories\ITransaction;
 use App\Contracts\Repositories\IUserSubscriptionRepository;
 use App\Contracts\Resolver\IResolver;
 use App\Contracts\Resolver\LaravelResolver;
@@ -41,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
             $userSubscriptionRepository = $app->make(IUserSubscriptionRepository::class);
             $movieRentRepository = $app->make(IMovieRentRepository::class);
             $genreRepository = $app->make(IGenreRepository::class);
+            $transaction = $app->make(ITransaction::class);
 
             return new MovieService(
                 $omdbDataProvider,
@@ -48,7 +50,8 @@ class AppServiceProvider extends ServiceProvider
                 $userSubscriptionRepository,
                 $movieRentRepository,
                 $genreRepository,
-                $movieGenreRepository
+                $movieGenreRepository,
+                $transaction
             );
         });
 
