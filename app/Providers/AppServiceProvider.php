@@ -2,28 +2,36 @@
 
 namespace App\Providers;
 
-use App\Contracts\MessageBus\IMessageBus;
-use App\Contracts\MessageBus\RedisMessageBus;
-use App\Contracts\Repositories\Eloquent\MovieRepository;
-use App\Contracts\Repositories\IGenreRepository;
-use App\Contracts\Repositories\IMovieGenreRepository;
-use App\Contracts\Repositories\IMovieRentRepository;
-use App\Contracts\Repositories\IMovieRepository;
-use App\Contracts\Repositories\ITransaction;
-use App\Contracts\Repositories\IUserSubscriptionRepository;
-use App\Contracts\Resolver\IResolver;
-use App\Contracts\Resolver\LaravelResolver;
-use App\Modules\Movie\Models\Movie;
-use App\Modules\Movie\Services\MovieSearchService\OMDBMovieSearchService;
-use App\Modules\Movie\Services\MovieService\MovieService;
-use App\Modules\Movie\Services\VideoUploader\IVideoUploader;
-use App\Modules\Movie\Services\VideoUploader\LocalStorageUploader;
-use App\Modules\Movie\Services\VideoUploader\VideoUploaderService;
-use App\Modules\Payment\Services\PaymentProviders\IPaymentMethod;
-use App\Modules\Payment\Services\PaymentProviders\PaymentMethods\MellatPayment;
-use App\Modules\Payment\Services\PaymentProviders\PaymentMethods\SamanPayment;
-use App\Modules\Payment\Services\PaymentProviders\PaymentRegistry;
+use App\Src\Application\Command\FavouriteMovie\AddFavouriteMovieCommand;
+use App\Src\Application\Command\FavouriteMovie\GetUserFavouriteMovieCommand;
+use App\Src\Application\Command\FavouriteMovie\RemoveFavouriteMovieCommand;
+use App\Src\Application\Command\Movie\AddMovieCommand;
+use App\Src\Application\CommandHandler\FavouriteMovie\AddFavouriteMovieCommandHandler;
+use App\Src\Application\CommandHandler\FavouriteMovie\GetUserFavouriteMovieCommandHandler;
+use App\Src\Application\CommandHandler\FavouriteMovie\RemoveFavouriteMovieCommandHandler;
+use App\Src\Application\CommandHandler\Movie\AddMovieCommandHandler;
+use App\Src\Application\Service\MovieSearchService\OMDBMovieSearchService;
+use App\Src\Application\Service\PaymentService\PaymentRegistry;
+use App\Src\Domain\Repository\IFavoriteRepository;
+use App\Src\Domain\Repository\IGenreRepository;
+use App\Src\Domain\Repository\IMovieGenreRepository;
+use App\Src\Domain\Repository\IMovieRepository;
+use App\Src\Domain\Repository\ITransaction;
+use App\Src\Domain\Service\Payment\IPaymentMethod;
+use App\Src\Domain\Service\VideoUploader\IVideoUploader;
+use App\Src\Instrastructure\MessageBus\IMessageBus;
+use App\Src\Instrastructure\MessageBus\RedisMessageBus;
+use App\Src\Instrastructure\Resolver\IResolver;
+use App\Src\Instrastructure\Resolver\LaravelResolver;
+use App\Src\Instrastructure\Service\PaymentMethods\MellatPayment;
+use App\Src\Instrastructure\Service\PaymentMethods\SamanPayment;
+use App\Src\Instrastructure\Service\VideoUploader\LocalStorageUploader;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Messenger\Handler\HandlerDescriptor;
+use Symfony\Component\Messenger\Handler\HandlersLocator;
+use Symfony\Component\Messenger\MessageBus;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,34 +40,46 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(MovieService::class, function ($app) {
+        $this->app->singleton(AddMovieCommandHandler::class, function ($app) {
             $apiKey = config('services.omdb.api-key');
-
             $omdbDataProvider = new OMDBMovieSearchService($apiKey);
 
-            $movieRepository = $app->make(IMovieRepository::class);
-            $movieGenreRepository = $app->make(IMovieGenreRepository::class);;
-            $userSubscriptionRepository = $app->make(IUserSubscriptionRepository::class);
-            $movieRentRepository = $app->make(IMovieRentRepository::class);
-            $genreRepository = $app->make(IGenreRepository::class);
-            $transaction = $app->make(ITransaction::class);
-
-            return new MovieService(
+            return new AddMovieCommandHandler(
+                $app->make(IMovieRepository::class),
+                $app->make(IMovieGenreRepository::class),
+                $app->make(IGenreRepository::class),
                 $omdbDataProvider,
-                $movieRepository,
-                $userSubscriptionRepository,
-                $movieRentRepository,
-                $genreRepository,
-                $movieGenreRepository,
-                $transaction
+                $app->make(ITransaction::class)
             );
         });
 
-        $this->app->bind(VideoUploaderService::class, function ($app) {
-            $movieRepository = new MovieRepository(new Movie());
-            $videoUploaderService = new LocalStorageUploader();
+        $this->app->singleton(AddFavouriteMovieCommandHandler::class, function ($app) {
+            return new AddFavouriteMovieCommandHandler(
+                $app->make(IMovieRepository::class),
+                $app->make(IFavoriteRepository::class),
+                $app->make(IMessageBus::class),
+            );
+        });
 
-            return new VideoUploaderService($movieRepository, $videoUploaderService);
+        $this->app->singleton(MessageBusInterface::class, function ($app) {
+            return new MessageBus([
+                new HandleMessageMiddleware(
+                    new HandlersLocator([
+                        AddMovieCommand::class => [
+                            new HandlerDescriptor($app->make(AddMovieCommandHandler::class)),
+                        ],
+                        AddFavouriteMovieCommand::class => [
+                            new HandlerDescriptor($app->make(AddFavouriteMovieCommandHandler::class)),
+                        ],
+                        RemoveFavouriteMovieCommand::class => [
+                            new HandlerDescriptor($app->make(RemoveFavouriteMovieCommandHandler::class)),
+                        ],
+                        GetUserFavouriteMovieCommand::class => [
+                            new HandlerDescriptor($app->make(GetUserFavouriteMovieCommandHandler::class)),
+                        ],
+                    ])
+                ),
+            ]);
         });
 
         $this->app->bind(IPaymentMethod::class, function ($app) {

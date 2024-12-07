@@ -2,32 +2,35 @@
 
 namespace App\Providers;
 
-use App\Contracts\Repositories\Eloquent\FavoriteRepository;
-use App\Contracts\Repositories\Eloquent\GenreRepository;
-use App\Contracts\Repositories\Eloquent\MovieRentRepository;
-use App\Contracts\Repositories\Eloquent\MovieRepository;
-use App\Contracts\Repositories\Eloquent\PaymentRepository;
-use App\Contracts\Repositories\Eloquent\SubscriptionRepository;
-use App\Contracts\Repositories\Eloquent\Transaction;
-use App\Contracts\Repositories\Eloquent\UserRepository;
-use App\Contracts\Repositories\Eloquent\UserSubscriptionRepository;
-use App\Contracts\Repositories\IFavoriteRepository;
-use App\Contracts\Repositories\IGenreRepository;
-use App\Contracts\Repositories\IMovieRentRepository;
-use App\Contracts\Repositories\IMovieRepository;
-use App\Contracts\Repositories\IPaymentRepository;
-use App\Contracts\Repositories\ISubscriptionRepository;
-use App\Contracts\Repositories\ITransaction;
-use App\Contracts\Repositories\IUserRepository;
-use App\Contracts\Repositories\IUserSubscriptionRepository;
-use App\Modules\Favorite\Models\FavoriteMovie;
-use App\Modules\Movie\Models\Genre;
-use App\Modules\Movie\Models\Movie;
-use App\Modules\Movie\Models\MovieRent;
-use App\Modules\Payment\Models\Payment;
-use App\Modules\Subscription\Models\Subscription;
-use App\Modules\Subscription\Models\UserSubscription;
-use App\Modules\User\Models\User;
+use App\Src\Domain\Model\Favorite\FavoriteMovie;
+use App\Src\Domain\Model\Movie\Genre;
+use App\Src\Domain\Model\Movie\Movie;
+use App\Src\Domain\Model\Movie\MovieGenre;
+use App\Src\Domain\Model\Movie\MovieRent;
+use App\Src\Domain\Model\Payment\Payment;
+use App\Src\Domain\Model\Subscription\Subscription;
+use App\Src\Domain\Model\Subscription\UserSubscription;
+use App\Src\Domain\Model\User\User;
+use App\Src\Domain\Repository\IFavoriteRepository;
+use App\Src\Domain\Repository\IGenreRepository;
+use App\Src\Domain\Repository\IMovieGenreRepository;
+use App\Src\Domain\Repository\IMovieRentRepository;
+use App\Src\Domain\Repository\IMovieRepository;
+use App\Src\Domain\Repository\IPaymentRepository;
+use App\Src\Domain\Repository\ISubscriptionRepository;
+use App\Src\Domain\Repository\ITransaction;
+use App\Src\Domain\Repository\IUserRepository;
+use App\Src\Domain\Repository\IUserSubscriptionRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\FavoriteRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\GenreRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\MovieGenreRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\MovieRentRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\MovieRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\PaymentRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\SubscriptionRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\Transaction;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\UserRepository;
+use App\Src\Instrastructure\Persistance\Repository\Eloquent\UserSubscriptionRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -73,16 +76,22 @@ class RepositoryServiceProvider extends ServiceProvider
             return new UserRepository($userEloquent);
         });
 
-        $this->app->bind(IMovieRentRepository::class, function ($app){
+        $this->app->bind(IMovieRentRepository::class, function ($app) {
             $movieRentEloquent = new MovieRent();
 
             return new MovieRentRepository($movieRentEloquent);
         });
 
-        $this->app->bind(IGenreRepository::class, function ($app){
+        $this->app->bind(IGenreRepository::class, function ($app) {
             $genreEloquent = new Genre();
 
             return new GenreRepository($genreEloquent);
+        });
+
+        $this->app->bind(IMovieGenreRepository::class, function ($app) {
+            $movieGenreEloquent = new MovieGenre();
+
+            return new MovieGenreRepository($movieGenreEloquent);
         });
 
         $this->app->bind(ITransaction::class, Transaction::class);

@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\API\AdminMovieController;
-use App\Http\Controllers\API\AdminSubscriptionController;
-use App\Http\Controllers\API\UserFavoriteMovieController;
-use App\Http\Controllers\API\UserMovieController;
-use App\Http\Controllers\API\UserPaymentController;
+use App\Src\UI\Controller\API\AdminMovieController;
+use App\Src\UI\Controller\API\AdminSubscriptionController;
+use App\Src\UI\Controller\API\UserFavoriteMovieController;
+use App\Src\UI\Controller\API\UserMovieController;
+use App\Src\UI\Controller\API\UserPaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin/movie')->group(function () {
