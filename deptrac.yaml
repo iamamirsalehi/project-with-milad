@@ -1,24 +1,29 @@
 deptrac:
   paths:
-    - ./app
-  exclude_files:
-    - '#.*test.*#'
+    - ./app/
   layers:
-    - name: Controller
+    - name: Application
       collectors:
-        - type: classLike
-          value: .*Controller.*
-    - name: Repository
+        - type: directory
+          value: ./app/Src/Application
+    - name: Domain
       collectors:
-        - type: classLike
-          value: .*Repository.*
-    - name: Service
+        - type: directory
+          value: ./app/Src/Domain
+    - name: Infrastructure
       collectors:
-        - type: classLike
-          value: .*Service.*
+        - type: directory
+          value: ./app/Src/Infrastructure
+    - name: UI
+      collectors:
+        - type: directory
+          value: ./app/Src/UI
   ruleset:
-    Controller:
-      - Service
-    Service:
-      - Repository
-    Repository:
+    Application:
+      - Domain
+    UI:
+      - Domain
+      - Application
+    Domain: [ ]
+    Infrastructure:
+      - Domain

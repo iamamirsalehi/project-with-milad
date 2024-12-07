@@ -3,8 +3,8 @@
 namespace App\Src\Application\Service\PaymentService;
 
 use App\Src\Domain\Exceptions\PaymentApplicationException;
+use App\Src\Domain\Resolver\IResolver;
 use App\Src\Domain\Service\Payment\IPaymentMethod;
-use App\Src\Instrastructure\Resolver\IResolver;
 
 final class PaymentRegistry
 {

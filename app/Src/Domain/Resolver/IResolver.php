@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Src\Instrastructure\Resolver;
+namespace App\Src\Domain\Resolver;
 
 interface IResolver
 {
