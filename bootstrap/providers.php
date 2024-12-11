@@ -1,8 +1,8 @@
 <?php
 
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\CommandHandlerServiceProvider::class,
-    App\Providers\MessageBusServiceProvider::class,
-    App\Providers\RepositoryServiceProvider::class,
+    \App\Infrastructure\Laravel\Providers\AppServiceProvider::class,
+    \App\Infrastructure\Laravel\Providers\CommandHandlerServiceProvider::class,
+    \App\Infrastructure\Laravel\Providers\MessageBusServiceProvider::class,
+    \App\Infrastructure\Laravel\Providers\RepositoryServiceProvider::class,
 ];
