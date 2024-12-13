@@ -22,6 +22,7 @@ Route::prefix('admin/subscription')->group(function () {
 Route::prefix('movie')->group(function () {
     Route::get('genres', [UserMovieController::class, 'genres']);
     Route::get('list', [UserMovieController::class, 'list']);
+    Route::get('access-link', [UserMovieController::class, 'getAccessLink']);
     Route::get('', [UserMovieController::class, 'get']);
     Route::post('watch', [UserMovieController::class, 'watch']);
     Route::post('favorite', [UserFavoriteMovieController::class, 'addToFavorite']);

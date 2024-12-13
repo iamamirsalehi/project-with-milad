@@ -28,11 +28,13 @@ use App\Application\CommandHandler\VerifyPaymentCommandHandler;
 use App\Application\CommandHandler\WatchMovieCommandHandler;
 use App\Application\Query\AllGenreQuery;
 use App\Application\Query\FilterMovieQuery;
+use App\Application\Query\GetMovieAccessLink;
 use App\Application\Query\GetMovieIfAvailableQuery;
 use App\Application\Query\GetMovieQuery;
 use App\Application\Query\GetUserFavouriteMovieQuery;
 use App\Application\QueryHandler\AllGenreQueryHandler;
 use App\Application\QueryHandler\FilterMovieQueryHandler;
+use App\Application\QueryHandler\GetMovieAccessLinkQueryHandler;
 use App\Application\QueryHandler\GetMovieIfAvailableQueryHandler;
 use App\Application\QueryHandler\GetMovieQueryHandler;
 use App\Application\QueryHandler\GetUserFavouriteMovieQueryHandler;
@@ -127,6 +129,9 @@ class MessageBusServiceProvider extends ServiceProvider
             ],
             WatchMovieCommand::class => [
                 new HandlerDescriptor($app->make(WatchMovieCommandHandler::class)),
+            ],
+            GetMovieAccessLink::class => [
+                new HandlerDescriptor($app->make(GetMovieAccessLinkQueryHandler::class)),
             ],
         ];
     }

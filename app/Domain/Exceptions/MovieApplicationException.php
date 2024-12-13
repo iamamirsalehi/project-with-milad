@@ -39,6 +39,7 @@ final class MovieApplicationException extends BusinessException
     private const MOVIE_RENT_IS_ALREADY_ACTIVATED = 'movie rent is already activated';
     private const MOVIE_RENT_IS_ALREADY_STARTED_TO_WATCHING = 'movie rent is already started to watching';
     private const MOVIE_IS_NOT_ACCESSIBLE = 'movie is not accessible';
+    private const INVALID_MOVIE_URL = 'invalud movie url';
 
     public static function movieAlreadyExists(): self
     {
@@ -213,5 +214,10 @@ final class MovieApplicationException extends BusinessException
     public static function movieIsNotAccessible(): self
     {
         return new self(self::MOVIE_IS_NOT_ACCESSIBLE);
+    }
+
+    public static function invalidMovieUrl(): self
+    {
+        return new self(self::INVALID_MOVIE_URL);
     }
 }

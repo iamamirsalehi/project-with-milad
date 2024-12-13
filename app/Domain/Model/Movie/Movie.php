@@ -10,6 +10,7 @@ use App\Infrastructure\Cast\Movie\IMDBRatingCast;
 use App\Infrastructure\Cast\Movie\IMDBVoteCast;
 use App\Infrastructure\Cast\Movie\LanguageCast;
 use App\Infrastructure\Cast\Movie\MovieIDCast;
+use App\Infrastructure\Cast\Movie\MovieUrlCast;
 use App\Infrastructure\Cast\Movie\PosterCast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -21,7 +22,7 @@ use Illuminate\Support\Carbon;
  * @property Language $language
  * @property Country $country
  * @property Poster $poster
- * @property string $url
+ * @property MovieURL $url
  * @property-read MovieStatus $status
  * @property IMDBRating $imdb_rating
  * @property IMDBID $imdb_id
@@ -40,6 +41,7 @@ final class Movie extends Model
             'language' => LanguageCast::class,
             'country' => CountryCast::class,
             'poster' => PosterCast::class,
+            'url' => MovieUrlCast::class,
             'imdb_id' => IMDBIDCast::class,
             'imdb_rating' => IMDBRatingCast::class,
             'imdb_vote' => IMDBVoteCast::class,

@@ -5,6 +5,7 @@ namespace App\UI\Controller\API;
 use App\Application\Command\WatchMovieCommand;
 use App\Application\Query\AllGenreQuery;
 use App\Application\Query\FilterMovieQuery;
+use App\Application\Query\GetMovieAccessLink;
 use App\Application\Query\GetMovieIfAvailableQuery;
 use App\Domain\Exceptions\BusinessException;
 use App\Domain\Model\Movie\GenreName;
@@ -12,6 +13,7 @@ use App\Domain\Model\Movie\IMDBID;
 use App\Domain\Model\User\UserID;
 use App\Infrastructure\CommandBus\CommandBus;
 use App\Infrastructure\QueryBus\QueryBus;
+use App\UI\Request\API\GetMovieAccessLinkRequest;
 use App\UI\Request\API\MovieRequest;
 use App\UI\Request\API\WatchRequest;
 use App\UI\Resource\API\GenreResource;
@@ -82,5 +84,21 @@ final readonly class UserMovieController
         }
 
         return JsonResponse::ok('watching');
+    }
+
+    public function getAccessLink(GetMovieAccessLinkRequest $request): Response
+    {
+        try {
+            $userID = new UserID($request->get('user_id'));
+            $imdbID = new IMDBID($request->get('imdb_id'));
+
+            $accessLink = $this->queryBus->handle(new GetMovieAccessLink($userID, $imdbID));
+        } catch (BusinessException $exception) {
+            return JsonResponse::unprocessableEntity($exception->getMessage());
+        }
+
+        return JsonResponse::ok('', [
+            'access-link' => $accessLink
+        ]);
     }
 }
